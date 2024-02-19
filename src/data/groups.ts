@@ -6,9 +6,11 @@ export type ModuleGroup = {
 	color: string;
 };
 
+export const id = ref(0);
+
 export const moduleGroups: Ref<ModuleGroup[]> = ref([
 	{
-		id: 1,
+		id: id.value++,
 		name: "Mathematik und Theoretische Informatik",
 		color: "#00ff00",
 	},
