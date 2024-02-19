@@ -29,3 +29,17 @@ export function addModuleGroup(data: Record<string, string>) {
 		color: data.color,
 	});
 }
+
+export function editModuleGroup(group: ModuleGroup, data: Record<string, string>) {
+	if (!data.name || !data.color || !isValidColor(data.color)) {
+		alert("Recieved invalid data for this module group. Try adding it again.");
+		return;
+	}
+
+	for (const [key, value] of Object.entries(data)) {
+		if (!["name", "color"].includes(key)) continue;
+
+		// @ts-expect-error At this point key can only be a valid key for a ModuleGroup
+		group[key] = value;
+	}
+}

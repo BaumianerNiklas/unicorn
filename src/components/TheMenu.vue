@@ -5,7 +5,7 @@ import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
-import { moduleGroups, addModuleGroup } from "@/data/groups";
+import { moduleGroups, addModuleGroup, editModuleGroup } from "@/data/groups";
 
 const modules = computed(() => allModules.value.filter((m) => m.semester === "none"));
 </script>
@@ -54,7 +54,22 @@ const modules = computed(() => allModules.value.filter((m) => m.semester === "no
 				:key="group.id"
 				:style="{ backgroundColor: group.color ?? 'initial' }"
 			>
-				{{ group.name }} ({{ allModules.filter((m) => m.group === group).length }})
+				<FormModal reset-on-close @submit="(data) => editModuleGroup(group, data)">
+					<template v-slot:form-elements>
+						<label>
+							Name
+							<input type="text" required name="name" :data-default="group.name" />
+						</label>
+						<label>
+							Color
+							<input type="color" required name="color" :data-default="group.color" />
+						</label>
+					</template>
+
+					<template v-slot:open-button>
+						{{ group.name }} ({{ allModules.filter((m) => m.group === group).length }})
+					</template>
+				</FormModal>
 			</li>
 		</ul>
 	</menu>
