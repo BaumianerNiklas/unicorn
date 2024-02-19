@@ -7,3 +7,7 @@
 #app {
   font-family: sans-serif;
 }
+
+ul {
+  list-style: none;
+}

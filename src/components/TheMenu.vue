@@ -48,6 +48,7 @@ function addModule(data: Record<string, string>) {
 			<input required type="number" v-model="semesterCount" name="semesterCount" />
 		</label>
 
+		<h2>Your modules</h2>
 		<FormModal @submit="addModule" reset-on-close>
 			<template v-slot:open-button>Add module</template>
 
@@ -55,16 +56,18 @@ function addModule(data: Record<string, string>) {
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<div v-for="module in modules" :key="module.id">
-			<FormModal reset-on-close @submit="(data) => editModule(module, data)">
-				<template v-slot:form-elements>
-					<ModuleForm :module="module" />
-				</template>
+		<ul>
+			<li v-for="module in modules" :key="module.id">
+				<FormModal reset-on-close @submit="(data) => editModule(module, data)">
+					<template v-slot:form-elements>
+						<ModuleForm :module="module" />
+					</template>
 
-				<template v-slot:open-button>
-					<ModuleCard :module="module" />
-				</template>
-			</FormModal>
-		</div>
+					<template v-slot:open-button>
+						<ModuleCard :module="module" />
+					</template>
+				</FormModal>
+			</li>
+		</ul>
 	</menu>
 </template>
