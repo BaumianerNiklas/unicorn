@@ -4,7 +4,7 @@ import { moduleGroups, type ModuleGroup } from "./groups";
 export type Module = {
 	id: number;
 	name: string;
-	semester?: number | "none";
+	semester?: number;
 	ects: number;
 	group?: ModuleGroup;
 };
@@ -28,7 +28,7 @@ export function addModule(data: Record<string, string>) {
 
 	const semester = data.semester
 		? data.semester === "none"
-			? data.semester
+			? undefined
 			: parseInt(data.semester)
 		: undefined;
 
@@ -56,7 +56,7 @@ export function editModule(module: Module, data: Record<string, string>) {
 
 		const semester = data.semester
 			? data.semester === "none"
-				? data.semester
+				? undefined
 				: parseInt(data.semester)
 			: undefined;
 

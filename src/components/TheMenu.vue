@@ -7,7 +7,7 @@ import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
 import { moduleGroups, addModuleGroup, editModuleGroup } from "@/data/groups";
 
-const modules = computed(() => allModules.value.filter((m) => m.semester === "none"));
+const modules = computed(() => allModules.value.filter((m) => !m.semester));
 </script>
 
 <template>
