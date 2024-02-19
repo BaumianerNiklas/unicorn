@@ -6,6 +6,7 @@ import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import SemesterUpdateForm from "./SemesterUpdateForm.vue";
 import { computed } from "vue";
+import { moduleGroups } from "@/data/groups";
 
 const modules = computed(() => allModules.value.filter((m) => m.semester === "none"));
 
@@ -21,12 +22,20 @@ function addModule(data: Record<string, string>) {
 			: parseInt(data.semester)
 		: undefined;
 
+	const groupId = data.group
+		? data.group === "none"
+			? undefined
+			: parseInt(data.group)
+		: undefined;
+
 	const newModule: Module = {
 		id: moduleId.value++,
 		name: data.name,
 		ects: parseInt(data.ects),
 		semester,
 	};
+
+	if (groupId) newModule.group = moduleGroups.value.find((g) => g.id === groupId);
 
 	allModules.value.push(newModule);
 }
@@ -45,6 +54,15 @@ function addModule(data: Record<string, string>) {
 			<template v-slot:form-elements>
 				<label>Name <input required type="text" name="name" /></label>
 				<label>ECTS <input required type="number" name="ects" /></label>
+				<label>
+					Group
+					<select name="group">
+						<option value="none">None</option>
+						<option v-for="group in moduleGroups" :value="group.id" :key="group.id">
+							{{ group.name }}
+						</option>
+					</select>
+				</label>
 				<label>
 					Semester
 
