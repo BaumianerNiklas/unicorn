@@ -69,5 +69,16 @@ function addModule(data: Record<string, string>) {
 				</FormModal>
 			</li>
 		</ul>
+
+		<h2>Your module groups</h2>
+		<ul>
+			<li
+				v-for="group in moduleGroups"
+				:key="group.id"
+				:style="{ backgroundColor: group.color ?? 'initial' }"
+			>
+				{{ group.name }} ({{ allModules.filter((m) => m.group === group).length }})
+			</li>
+		</ul>
 	</menu>
 </template>
