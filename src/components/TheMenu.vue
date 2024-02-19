@@ -1,58 +1,13 @@
 <script setup lang="ts">
-import { modules as allModules, type Module, id as moduleId } from "@/data/modules.js";
+import { modules as allModules, addModule, editModule } from "@/data/modules.js";
 import { semesterCount } from "@/data/semesterCount.js";
-import editModule from "@/util/editModule.js";
-import isValidColor from "@/util/isValidColor.js";
 import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
-import { moduleGroups, id as groupId } from "@/data/groups";
+import { moduleGroups, addModuleGroup } from "@/data/groups";
 
 const modules = computed(() => allModules.value.filter((m) => m.semester === "none"));
-
-function addModule(data: Record<string, string>) {
-	if (!data.name || !data.ects) {
-		alert("Received invalid data for this module. Try adding it again.");
-		return;
-	}
-
-	const semester = data.semester
-		? data.semester === "none"
-			? data.semester
-			: parseInt(data.semester)
-		: undefined;
-
-	const groupId = data.group
-		? data.group === "none"
-			? undefined
-			: parseInt(data.group)
-		: undefined;
-
-	const newModule: Module = {
-		id: moduleId.value++,
-		name: data.name,
-		ects: parseInt(data.ects),
-		semester,
-	};
-
-	if (groupId) newModule.group = moduleGroups.value.find((g) => g.id === groupId);
-
-	allModules.value.push(newModule);
-}
-
-function addModuleGroup(data: Record<string, string>) {
-	if (!data.name || !data.color || !isValidColor(data.color)) {
-		alert("Recieved invalid data for this module group. Try adding it again.");
-		return;
-	}
-
-	moduleGroups.value.push({
-		id: groupId.value++,
-		name: data.name,
-		color: data.color,
-	});
-}
 </script>
 
 <template>

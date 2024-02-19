@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { modules as allModules } from "@/data/modules.js";
+import { modules as allModules, editModule } from "@/data/modules.js";
 import ModuleCard from "./ModuleCard.vue";
 import { computed } from "vue";
 import FormModal from "./FormModal.vue";
-import editModule from "@/util/editModule";
 import ModuleForm from "./ModuleForm.vue";
 
 const { semester } = defineProps<{ semester: number }>();
