@@ -19,11 +19,11 @@ function handleSubmit(event: Event) {
 	const formData = new FormData(event.target as HTMLFormElement);
 
 	emit("submit", Object.fromEntries(formData) as Record<string, string>);
+
+	dialogElem.value?.close();
 }
 
 function resetForm() {
-	if (!resetOnClose) return;
-
 	formElem.value?.reset();
 	writeDefaultValues();
 }
