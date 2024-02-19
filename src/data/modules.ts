@@ -9,13 +9,13 @@ export type Module = {
 	group?: ModuleGroup;
 };
 
+export const id = ref(0);
+
 export const modules = ref<Module[]>([
 	{
-		id: 1,
+		id: id.value++,
 		name: "Lineare Algebra I",
 		semester: 1,
 		ects: 9,
 	},
 ]);
-
-export const id = ref(0);
