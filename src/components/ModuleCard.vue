@@ -5,7 +5,10 @@ defineProps<{ module: Module }>();
 </script>
 
 <template>
-	<div class="text-center p-2 bg-green-300 rounded-2">
+	<div
+		class="text-center p-2 rounded-2"
+		:style="{ backgroundColor: module.group?.color ?? 'inherit' }"
+	>
 		<span>{{ module.name }}</span> <br />
 		<span>({{ module.ects }})</span>
 	</div>
