@@ -2,11 +2,12 @@
 import { modules as allModules, type Module, id as moduleId } from "@/data/modules.js";
 import { semesterCount } from "@/data/semesterCount.js";
 import editModule from "@/util/editModule.js";
+import isValidColor from "@/util/isValidColor.js";
 import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
-import { moduleGroups } from "@/data/groups";
+import { moduleGroups, id as groupId } from "@/data/groups";
 
 const modules = computed(() => allModules.value.filter((m) => m.semester === "none"));
 
@@ -38,6 +39,19 @@ function addModule(data: Record<string, string>) {
 	if (groupId) newModule.group = moduleGroups.value.find((g) => g.id === groupId);
 
 	allModules.value.push(newModule);
+}
+
+function addModuleGroup(data: Record<string, string>) {
+	if (!data.name || !data.color || !isValidColor(data.color)) {
+		alert("Recieved invalid data for this module group. Try adding it again.");
+		return;
+	}
+
+	moduleGroups.value.push({
+		id: groupId.value++,
+		name: data.name,
+		color: data.color,
+	});
 }
 </script>
 
@@ -71,6 +85,14 @@ function addModule(data: Record<string, string>) {
 		</ul>
 
 		<h2>Your module groups</h2>
+		<FormModal reset-on-close @submit="addModuleGroup">
+			<template v-slot:open-button>Create new group</template>
+
+			<template v-slot:form-elements>
+				<label>Name <input type="text" name="name" /></label>
+				<label>Color <input type="color" name="color" /></label>
+			</template>
+		</FormModal>
 		<ul>
 			<li
 				v-for="group in moduleGroups"
