@@ -22,6 +22,4 @@ export default function (module: Module, data: Record<string, string>) {
 				break;
 		}
 	}
-
-	console.log(module);
 }
