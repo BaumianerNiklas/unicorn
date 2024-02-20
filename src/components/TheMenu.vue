@@ -6,12 +6,21 @@ import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
 import { moduleGroups, addModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
+import { saveToLocalstorage } from "@/util/localStorage";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
+
+function reset() {
+	moduleGroups.value = [];
+	allModules.value = [];
+}
 </script>
 
 <template>
 	<menu>
+		<button @click="saveToLocalstorage">Save changes</button>
+		<button @click="reset">Reset</button>
+
 		<label>
 			Semester Count
 			<input required type="number" v-model="semesterCount" name="semesterCount" />
@@ -68,7 +77,8 @@ const modules = computed(() => allModules.value.filter((m) => !m.semester));
 					</template>
 
 					<template v-slot:open-button>
-						{{ group.name }} ({{ allModules.filter((m) => m.group === group).length }})
+						{{ group.name }}
+						({{ allModules.filter((m) => m.group?.id === group.id).length }})
 					</template>
 				</FormModal>
 			</li>

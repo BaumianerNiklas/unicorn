@@ -12,14 +12,7 @@ export type Module = {
 
 let id = 0;
 
-export const modules = ref<Module[]>([
-	{
-		id: id++,
-		name: "Lineare Algebra I",
-		semester: 1,
-		ects: 9,
-	},
-]);
+export const modules = ref<Module[]>([]);
 
 export function addModule(data: Record<string, string>) {
 	if (!data.name || !data.ects) {
@@ -66,5 +59,11 @@ export function editModule(module: Module, data: Record<string, string>) {
 }
 
 export function deleteModule(module: Module) {
-	modules.value = modules.value.filter((m) => m !== module);
+	modules.value = modules.value.filter((m) => m.id !== module.id);
+}
+
+export function setModules(newModules: Module[]) {
+	modules.value = newModules;
+
+	id = modules.value.reduce((acc, curr) => Math.max(acc, curr.id), id) + 1;
 }
