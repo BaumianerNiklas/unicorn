@@ -1,5 +1,6 @@
 import isValidColor from "@/util/isValidColor";
 import { ref, type Ref } from "vue";
+import { modules } from "./modules";
 
 export type ModuleGroup = {
 	id: number;
@@ -46,4 +47,8 @@ export function editModuleGroup(group: ModuleGroup, data: Record<string, string>
 
 export function deleteModuleGroup(group: ModuleGroup) {
 	moduleGroups.value = moduleGroups.value.filter((g) => g !== group);
+
+	modules.value.forEach((module) => {
+		if (module.group === group) module.group = undefined;
+	});
 }
