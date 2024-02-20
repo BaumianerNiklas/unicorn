@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { moduleGroups, type ModuleGroup } from "./groups";
+import parseNoneableStringToInt from "@/util/parseNoneableStringToInt";
 
 export type Module = {
 	id: number;
@@ -26,25 +27,16 @@ export function addModule(data: Record<string, string>) {
 		return;
 	}
 
-	const semester = data.semester
-		? data.semester === "none"
-			? undefined
-			: parseInt(data.semester)
-		: undefined;
-
-	const groupId = data.group
-		? data.group === "none"
-			? undefined
-			: parseInt(data.group)
-		: undefined;
+	const semester = parseNoneableStringToInt(data.semester);
+	const groupId = parseNoneableStringToInt(data.group);
 
 	const newModule: Module = {
 		id: id++,
 		name: data.name,
 		ects: parseInt(data.ects),
-		semester,
 	};
 
+	if (semester) newModule.semester = semester;
 	if (groupId) newModule.group = moduleGroups.value.find((g) => g.id === groupId);
 
 	modules.value.push(newModule);
@@ -54,24 +46,14 @@ export function editModule(module: Module, data: Record<string, string>) {
 	for (const [key, value] of Object.entries(data)) {
 		if (!["name", "ects", "semester", "group"].includes(key)) continue;
 
-		const semester = data.semester
-			? data.semester === "none"
-				? undefined
-				: parseInt(data.semester)
-			: undefined;
-
-		const groupId = data.group
-			? data.group === "none"
-				? undefined
-				: parseInt(data.group)
-			: undefined;
+		const groupId = parseNoneableStringToInt(data.group);
 
 		switch (key) {
 			case "name":
 				module[key] = value;
 				break;
 			case "semester":
-				module[key] = semester;
+				module[key] = parseNoneableStringToInt(data.semester);
 				break;
 			case "ects":
 				module[key] = parseInt(value);
