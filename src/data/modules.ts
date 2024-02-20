@@ -64,3 +64,7 @@ export function editModule(module: Module, data: Record<string, string>) {
 		}
 	}
 }
+
+export function deleteModule(module: Module) {
+	modules.value = modules.value.filter((m) => m !== module);
+}

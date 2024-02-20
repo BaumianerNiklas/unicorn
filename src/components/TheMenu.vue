@@ -5,7 +5,7 @@ import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
-import { moduleGroups, addModuleGroup, editModuleGroup } from "@/data/groups";
+import { moduleGroups, addModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 </script>
@@ -64,6 +64,7 @@ const modules = computed(() => allModules.value.filter((m) => !m.semester));
 							Color
 							<input type="color" required name="color" :data-default="group.color" />
 						</label>
+						<button @click.prevent="deleteModuleGroup(group)">Delete</button>
 					</template>
 
 					<template v-slot:open-button>

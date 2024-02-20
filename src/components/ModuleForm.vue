@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { moduleGroups } from "@/data/groups";
-import { type Module } from "@/data/modules.js";
+import { deleteModule, type Module } from "@/data/modules.js";
 import { semesterCount } from "@/data/semesterCount.js";
 
 const { module } = defineProps<{ module?: Module }>();
@@ -33,4 +33,5 @@ const { module } = defineProps<{ module?: Module }>();
 			</option>
 		</select>
 	</label>
+	<button v-if="module" @click.prevent="deleteModule(module)">Delete</button>
 </template>

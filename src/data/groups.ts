@@ -43,3 +43,7 @@ export function editModuleGroup(group: ModuleGroup, data: Record<string, string>
 		group[key] = value;
 	}
 }
+
+export function deleteModuleGroup(group: ModuleGroup) {
+	moduleGroups.value = moduleGroups.value.filter((g) => g !== group);
+}
