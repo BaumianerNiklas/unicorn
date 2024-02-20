@@ -73,7 +73,7 @@ function reset() {
 							Color
 							<input type="color" required name="color" :data-default="group.color" />
 						</label>
-						<button @click.prevent="deleteModuleGroup(group)">Delete</button>
+						<button type="button" @click="deleteModuleGroup(group)">Delete</button>
 					</template>
 
 					<template v-slot:open-button>

@@ -33,5 +33,5 @@ const { module } = defineProps<{ module?: Module }>();
 			</option>
 		</select>
 	</label>
-	<button v-if="module" @click.prevent="deleteModule(module)">Delete</button>
+	<button type="button" v-if="module" @click="deleteModule(module)">Delete</button>
 </template>
