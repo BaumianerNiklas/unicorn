@@ -23,6 +23,8 @@ export function exportToJson() {
 	});
 	const downloadUrl = URL.createObjectURL(new Blob([json]));
 
+	// I don't know of another way of downloading a file than
+	// creating a phantom anchor element, setting its download attributes and clicking it
 	const anchor = document.createElement("a");
 	anchor.setAttribute("download", "unicorn.json");
 	anchor.setAttribute("href", downloadUrl);
