@@ -70,9 +70,9 @@ export function setModules(newModules: Module[]) {
 
 // I could import something like Zod to validate data like this, but this is relatively rudimentary and I
 // did not want to include another dependency for this simple task
-export function isValidModule(module: unknown) {
+export function isValidModule(module: unknown): module is Module {
 	// check if module is object (typeof arrays/null is also "object")
-	if (module && typeof module === "object" && !Array.isArray(module)) return false;
+	if (!module || typeof module !== "object" || Array.isArray(module)) return false;
 
 	const obj = module as Record<string | number | symbol, unknown>;
 
@@ -81,9 +81,9 @@ export function isValidModule(module: unknown) {
 		return false;
 
 	// check optional keys
-	if (obj.semester && (typeof obj.smester !== "number" || (obj.semester as number) <= 0))
-		// dont know why typescript doesnt infer the number type here     ^
-		return false;
+	if (obj.semester) {
+		if (typeof obj.semester !== "number" || obj.semester <= 0) return false;
+	}
 
 	if (obj.group && !isValidModuleGroup(obj.group)) return false;
 

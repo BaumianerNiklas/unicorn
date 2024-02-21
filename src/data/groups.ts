@@ -59,9 +59,9 @@ export function setModuleGroups(newModuleGroups: ModuleGroup[]) {
 	id = moduleGroups.value.reduce((acc, curr) => Math.max(acc, curr.id), id) + 1;
 }
 
-export function isValidModuleGroup(moduleGroup: unknown) {
+export function isValidModuleGroup(moduleGroup: unknown): moduleGroup is ModuleGroup {
 	// check if module is object (typeof arrays/null is also "object")
-	if (moduleGroup && typeof moduleGroup === "object" && !Array.isArray(moduleGroup)) return false;
+	if (!moduleGroup || typeof moduleGroup !== "object" || Array.isArray(moduleGroup)) return false;
 
 	const obj = moduleGroup as Record<string | number | symbol, unknown>;
 
