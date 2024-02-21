@@ -6,13 +6,23 @@ import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
 import { moduleGroups, addModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
-import { saveToLocalstorage, exportToJson } from "@/util/localStorage";
+import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 
 function reset() {
 	moduleGroups.value = [];
 	allModules.value = [];
+}
+
+async function handleFileUpload(e: Event) {
+	const files = (e.target as HTMLInputElement).files;
+
+	if (files?.length !== 1) return;
+
+	const json = await files.item(0)?.text();
+	if (!json) return;
+	importFromJson(json);
 }
 </script>
 
@@ -21,6 +31,17 @@ function reset() {
 		<button @click="saveToLocalstorage">Save changes</button>
 		<button @click="reset">Reset</button>
 		<button @click="exportToJson">Export to JSON</button>
+
+		<label>
+			Import from JSON
+			<input
+				type="file"
+				name="jsonImport"
+				accept="application/json"
+				@change="handleFileUpload"
+				class="opacity-0 size-0"
+			/>
+		</label>
 
 		<label>
 			Semester Count

@@ -1,5 +1,5 @@
-import { moduleGroups, setModuleGroups } from "@/data/groups";
-import { modules, setModules } from "@/data/modules";
+import { isValidModuleGroup, moduleGroups, setModuleGroups } from "@/data/groups";
+import { isValidModule, modules, setModules } from "@/data/modules";
 
 export function saveToLocalstorage() {
 	localStorage.setItem("modules", JSON.stringify(modules.value));
@@ -33,4 +33,23 @@ export function exportToJson() {
 	// cleanup
 	anchor.remove();
 	URL.revokeObjectURL(downloadUrl);
+}
+
+export function importFromJson(json: string) {
+	const data = JSON.parse(json);
+
+	// check if imported data is valid
+	let valid = true;
+	if (!Array.isArray(data.modules) || !Array.isArray(data.groups)) valid = false;
+
+	if (valid && !data.modules.every(isValidModule)) valid = false;
+	if (valid && !data.groups.every(isValidModuleGroup)) valid = false;
+
+	if (!valid) {
+		alert("This JSON file cannot be imported as it is not in the shape of a Unicorn export.");
+		return;
+	}
+
+	setModules(data.modules);
+	setModuleGroups(data.groups);
 }
