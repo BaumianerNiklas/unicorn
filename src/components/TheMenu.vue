@@ -6,7 +6,7 @@ import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
 import { moduleGroups, addModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
-import { saveToLocalstorage } from "@/util/localStorage";
+import { saveToLocalstorage, exportToJson } from "@/util/localStorage";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 
@@ -20,6 +20,7 @@ function reset() {
 	<menu>
 		<button @click="saveToLocalstorage">Save changes</button>
 		<button @click="reset">Reset</button>
+		<button @click="exportToJson">Export to JSON</button>
 
 		<label>
 			Semester Count

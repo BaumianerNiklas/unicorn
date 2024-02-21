@@ -15,3 +15,20 @@ export function loadFromLocalstorage() {
 	setModules(JSON.parse(modulesInStorage));
 	setModuleGroups(JSON.parse(groupsInStorage));
 }
+
+export function exportToJson() {
+	const json = JSON.stringify({
+		modules: modules.value,
+		groups: moduleGroups.value,
+	});
+	const downloadUrl = URL.createObjectURL(new Blob([json]));
+
+	const anchor = document.createElement("a");
+	anchor.setAttribute("download", "unicorn.json");
+	anchor.setAttribute("href", downloadUrl);
+	anchor.click();
+
+	// cleanup
+	anchor.remove();
+	URL.revokeObjectURL(downloadUrl);
+}
