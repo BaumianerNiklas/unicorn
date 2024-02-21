@@ -58,3 +58,21 @@ export function setModuleGroups(newModuleGroups: ModuleGroup[]) {
 
 	id = moduleGroups.value.reduce((acc, curr) => Math.max(acc, curr.id), id) + 1;
 }
+
+export function isValidModuleGroup(moduleGroup: unknown) {
+	// check if module is object (typeof arrays/null is also "object")
+	if (moduleGroup && typeof moduleGroup === "object" && !Array.isArray(moduleGroup)) return false;
+
+	const obj = moduleGroup as Record<string | number | symbol, unknown>;
+
+	// check for required keys
+	if (
+		typeof obj.id !== "number" ||
+		typeof obj.name !== "string" ||
+		typeof obj.color !== "string" ||
+		!isValidColor(obj.color)
+	)
+		return false;
+
+	return true;
+}
