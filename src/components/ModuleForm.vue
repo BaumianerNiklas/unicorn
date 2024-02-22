@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { moduleGroups } from "@/data/groups";
-import { deleteModule, type Module } from "@/data/modules.js";
+import { deleteModule, VALID_GRADES, type Module } from "@/data/modules.js";
 import { semesterCount } from "@/data/semesterCount.js";
 
 const { module } = defineProps<{ module?: Module }>();
@@ -30,6 +30,15 @@ const { module } = defineProps<{ module?: Module }>();
 			<option value="none">None</option>
 			<option v-for="group in moduleGroups" :value="group.id" :key="group.id">
 				{{ group.name }}
+			</option>
+		</select>
+	</label>
+	<label>
+		Grade
+		<select name="grade" :data-default="module?.grade?.toString() ?? 'none'">
+			<option value="none">None</option>
+			<option v-for="grade in VALID_GRADES" :value="grade" :key="grade">
+				{{ grade.toFixed(1) }}
 			</option>
 		</select>
 	</label>
