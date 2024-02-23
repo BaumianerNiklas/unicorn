@@ -7,6 +7,7 @@ import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
 import { moduleGroups, addModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
+import ModuleGroupCard from "./ModuleGroupCard.vue";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 
@@ -99,8 +100,7 @@ async function handleFileUpload(e: Event) {
 					</template>
 
 					<template v-slot:open-button>
-						{{ group.name }}
-						({{ allModules.filter((m) => m.group?.id === group.id).length }})
+						<ModuleGroupCard :group="group" />
 					</template>
 				</FormModal>
 			</li>

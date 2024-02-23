@@ -107,3 +107,13 @@ export function isValidModule(module: unknown): module is Module {
 
 	return true;
 }
+
+export function averageGrade(modules: Module[]) {
+	// only need to look at modules that have a grade
+	modules = modules.filter((m) => !!m.grade);
+
+	const totalEcts = modules.reduce((acc, curr) => acc + curr.ects, 0);
+	const weightedGradeSum = modules.reduce((acc, curr) => acc + curr.grade! * curr.ects, 0);
+
+	return weightedGradeSum / totalEcts;
+}
