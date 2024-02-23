@@ -5,7 +5,7 @@ import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
-import { moduleGroups, addModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
+import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
 
@@ -81,28 +81,8 @@ async function handleFileUpload(e: Event) {
 			</template>
 		</FormModal>
 		<ul>
-			<li
-				v-for="group in moduleGroups"
-				:key="group.id"
-				:style="{ backgroundColor: group.color ?? 'initial' }"
-			>
-				<FormModal reset-on-close @submit="(data) => editModuleGroup(group, data)">
-					<template v-slot:form-elements>
-						<label>
-							Name
-							<input type="text" required name="name" :data-default="group.name" />
-						</label>
-						<label>
-							Color
-							<input type="color" required name="color" :data-default="group.color" />
-						</label>
-						<button type="button" @click="deleteModuleGroup(group)">Delete</button>
-					</template>
-
-					<template v-slot:open-button>
-						<ModuleGroupCard :group="group" />
-					</template>
-				</FormModal>
+			<li v-for="group in moduleGroups" :key="group.id">
+				<ModuleGroupCard :group="group"></ModuleGroupCard>
 			</li>
 		</ul>
 	</menu>

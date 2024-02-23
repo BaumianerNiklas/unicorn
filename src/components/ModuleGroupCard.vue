@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { ModuleGroup } from "@/data/groups";
+import FormModal from "./FormModal.vue";
+import { type ModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
 import { modules as allModules, averageGrade } from "@/data/modules";
 import { computed } from "vue";
 
@@ -12,12 +13,27 @@ const avgGradeDisplay = computed(() => (isNaN(avgGrade.value) ? "/" : avgGrade.v
 </script>
 
 <template>
-	<div>
-		<span>{{ group.name }}</span>
-		<ul>
-			<li>Modules: {{ modules.length }}</li>
-			<li>Total ECTS: {{ modules.reduce((acc, curr) => acc + curr.ects, 0) }}</li>
-			<li>Average Grade: {{ avgGradeDisplay }}</li>
-		</ul>
-	</div>
+	<span :style="{ backgroundColor: group.color ? group.color : 'initial' }">
+		{{ group.name }}
+	</span>
+	<ul>
+		<li>Modules: {{ modules.length }}</li>
+		<li>Total ECTS: {{ modules.reduce((acc, curr) => acc + curr.ects, 0) }}</li>
+		<li>Average Grade: {{ avgGradeDisplay }}</li>
+	</ul>
+	<FormModal reset-on-close @submit="(data) => editModuleGroup(group, data)">
+		<template v-slot:form-elements>
+			<label>
+				Name
+				<input type="text" required name="name" :data-default="group.name" />
+			</label>
+			<label>
+				Color
+				<input type="color" required name="color" :data-default="group.color" />
+			</label>
+			<button type="button" @click="deleteModuleGroup(group)">Delete</button>
+		</template>
+
+		<template v-slot:open-button>Edit group</template>
+	</FormModal>
 </template>
