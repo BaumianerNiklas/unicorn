@@ -25,6 +25,18 @@ async function handleFileUpload(e: Event) {
 	if (!json) return;
 	importFromJson(json);
 }
+
+function handleDrop(e: DragEvent) {
+	const data = e.dataTransfer?.getData("text/plain");
+	if (!data) return;
+
+	const id = parseInt(data);
+
+	const module = allModules.value.find((m) => m.id === id);
+	if (!module) return;
+
+	delete module.semester;
+}
 </script>
 
 <template>
@@ -64,19 +76,20 @@ async function handleFileUpload(e: Event) {
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<ul>
-			<li v-for="module in modules" :key="module.id">
-				<FormModal reset-on-close @submit="(data) => editModule(module, data)">
-					<template v-slot:form-elements>
-						<ModuleForm :module="module" />
-					</template>
-
-					<template v-slot:open-button>
-						<ModuleCard :module="module" />
-					</template>
-				</FormModal>
-			</li>
-		</ul>
+		<div @dragover.prevent @drop="handleDrop" class="min-h-16">
+			<ul>
+				<li v-for="module in modules" :key="module.id">
+					<FormModal reset-on-close @submit="(data) => editModule(module, data)">
+						<template v-slot:form-elements>
+							<ModuleForm :module="module" />
+						</template>
+						<template v-slot:open-button>
+							<ModuleCard :module="module" />
+						</template>
+					</FormModal>
+				</li>
+			</ul>
+		</div>
 
 		<h2>Your module groups</h2>
 		<FormModal reset-on-close @submit="addModuleGroup">
