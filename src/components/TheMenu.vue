@@ -51,11 +51,6 @@ async function handleFileUpload(e: Event) {
 			<button @click="addSemester">+</button>
 		</div>
 
-		<!-- <label>
-			Semester Count
-			<input required type="number" v-model="semesterCount" name="semesterCount" />
-		</label> -->
-
 		<h2>Your modules</h2>
 		<FormModal @submit="addModule" reset-on-close>
 			<template v-slot:open-button>Add module</template>
