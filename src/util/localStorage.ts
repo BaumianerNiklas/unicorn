@@ -1,5 +1,6 @@
 import { isValidModuleGroup, moduleGroups, setModuleGroups } from "@/data/groups";
 import { isValidModule, modules, setModules } from "@/data/modules";
+import { semesterCount } from "@/data/semesterCount";
 
 export function saveToLocalstorage() {
 	localStorage.setItem("modules", JSON.stringify(modules.value));
@@ -52,4 +53,6 @@ export function importFromJson(json: string) {
 
 	setModules(data.modules);
 	setModuleGroups(data.groups);
+
+	semesterCount.value = modules.value.reduce((acc, curr) => Math.max(acc, curr.semester ?? 0), 1);
 }
