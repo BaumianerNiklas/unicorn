@@ -14,7 +14,7 @@ export const moduleGroups: Ref<ModuleGroup[]> = ref([]);
 
 export function addModuleGroup(data: Record<string, string>) {
 	if (!data.name || !data.color || !isValidColor(data.color)) {
-		alert("Recieved invalid data for this module group. Try adding it again.");
+		alert("Received invalid data for this module group. Try adding it again.");
 		return;
 	}
 
@@ -27,7 +27,7 @@ export function addModuleGroup(data: Record<string, string>) {
 
 export function editModuleGroup(group: ModuleGroup, data: Record<string, string>) {
 	if (!data.name || !data.color || !isValidColor(data.color)) {
-		alert("Recieved invalid data for this module group. Try adding it again.");
+		alert("Received invalid data for this module group. Try adding it again.");
 		return;
 	}
 
