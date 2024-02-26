@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { modules as allModules, addModule, editModule } from "@/data/modules.js";
-import { semesterCount } from "@/data/semesterCount.js";
+import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
 import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
@@ -44,10 +44,17 @@ async function handleFileUpload(e: Event) {
 			/>
 		</label>
 
-		<label>
+		<div>
+			<span>Semesters:</span>
+			<button @click="removeSemester">-</button>
+			<span>{{ semesterCount }} </span>
+			<button @click="addSemester">+</button>
+		</div>
+
+		<!-- <label>
 			Semester Count
 			<input required type="number" v-model="semesterCount" name="semesterCount" />
-		</label>
+		</label> -->
 
 		<h2>Your modules</h2>
 		<FormModal @submit="addModule" reset-on-close>
