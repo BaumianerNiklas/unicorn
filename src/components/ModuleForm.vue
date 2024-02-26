@@ -26,7 +26,7 @@ const { module } = defineProps<{ module?: Module }>();
 	</label>
 	<label>
 		Group
-		<select name="group" :data-default="module?.group?.id.toString() ?? 'none'">
+		<select name="groupId" :data-default="module?.groupId?.toString() ?? 'none'">
 			<option value="none">None</option>
 			<option v-for="group in moduleGroups" :value="group.id" :key="group.id">
 				{{ group.name }}

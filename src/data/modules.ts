@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { moduleGroups, type ModuleGroup, isValidModuleGroup } from "./groups";
+import { moduleGroups } from "./groups";
 import parseNoneableStringToInt from "@/util/parseNoneableStringToInt";
 
 export const VALID_GRADES = [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0] as const;
@@ -11,7 +11,7 @@ export type Module = {
 	semester?: number;
 	ects: number;
 	grade?: Grade;
-	group?: ModuleGroup;
+	groupId?: number;
 };
 
 let id = 0;
@@ -30,7 +30,7 @@ export function addModule(data: Record<string, string>) {
 			? undefined
 			: parseFloat(data.grade)
 		: undefined;
-	const groupId = parseNoneableStringToInt(data.group);
+	const groupId = parseNoneableStringToInt(data.groupId);
 
 	const newModule: Module = {
 		id: id++,
@@ -40,21 +40,22 @@ export function addModule(data: Record<string, string>) {
 
 	if (semester) newModule.semester = semester;
 	if (grade && VALID_GRADES.includes(grade as Grade)) newModule.grade = grade as Grade;
-	if (groupId) newModule.group = moduleGroups.value.find((g) => g.id === groupId);
+	if (groupId !== undefined && moduleGroups.value.some((g) => g.id === groupId))
+		newModule.groupId = groupId;
 
 	modules.value.push(newModule);
 }
 
 export function editModule(module: Module, data: Record<string, string>) {
 	for (const [key, value] of Object.entries(data)) {
-		if (!["name", "ects", "semester", "group", "grade"].includes(key)) continue;
+		if (!["name", "ects", "semester", "groupId", "grade"].includes(key)) continue;
 
 		const grade = data.grade
 			? data.grade === "none"
 				? undefined
 				: parseFloat(data.grade)
 			: undefined;
-		const groupId = parseNoneableStringToInt(data.group);
+		const groupId = parseNoneableStringToInt(data.groupId);
 
 		switch (key) {
 			case "name":
@@ -69,8 +70,10 @@ export function editModule(module: Module, data: Record<string, string>) {
 			case "grade":
 				module[key] = VALID_GRADES.includes(grade as Grade) ? (grade as Grade) : undefined;
 				break;
-			case "group":
-				module[key] = moduleGroups.value.find((g) => g.id === groupId);
+			case "groupId":
+				module[key] = moduleGroups.value.some((g) => g.id === groupId)
+					? groupId
+					: undefined;
 				break;
 		}
 	}
@@ -103,7 +106,7 @@ export function isValidModule(module: unknown): module is Module {
 		if (typeof obj.semester !== "number" || obj.semester <= 0) return false;
 	}
 
-	if (obj.group && !isValidModuleGroup(obj.group)) return false;
+	if (obj.groupId && typeof obj.groupId !== "number") return false;
 
 	return true;
 }

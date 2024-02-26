@@ -37,19 +37,13 @@ export function editModuleGroup(group: ModuleGroup, data: Record<string, string>
 		// @ts-expect-error At this point key can only be a valid key for a ModuleGroup
 		group[key] = value;
 	}
-
-	// Need to update all modules that have this group as they might not be the same pointer which
-	// means the DOM wouldn't rerender
-	for (const module of modules.value) {
-		if (module.group?.id === group.id) module.group = group;
-	}
 }
 
 export function deleteModuleGroup(group: ModuleGroup) {
 	moduleGroups.value = moduleGroups.value.filter((g) => g !== group);
 
 	modules.value.forEach((module) => {
-		if (module.group?.id === group.id) module.group = undefined;
+		if (module.groupId === group.id) module.groupId = undefined;
 	});
 }
 

@@ -6,7 +6,7 @@ import { computed } from "vue";
 
 const { group } = defineProps<{ group: ModuleGroup }>();
 
-const modules = computed(() => allModules.value.filter((m) => m.group?.id === group.id));
+const modules = computed(() => allModules.value.filter((m) => m.groupId === group.id));
 
 const avgGrade = computed(() => averageGrade(modules.value));
 const avgGradeDisplay = computed(() => (isNaN(avgGrade.value) ? "/" : avgGrade.value.toFixed(2)));
