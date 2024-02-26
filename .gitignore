@@ -27,3 +27,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# For testing JSON imports/exports locally
+unicorn.json
