@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { modules as allModules, editModule } from "@/data/modules.js";
+import {
+	modules as allModules,
+	editModule,
+	moveModuleToSemester,
+	sortModules,
+} from "@/data/modules.js";
 import ModuleCard from "./ModuleCard.vue";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 
@@ -9,6 +14,8 @@ const { semester } = defineProps<{ semester: number }>();
 
 const modules = computed(() => allModules.value.filter((m) => m.semester === semester));
 const totalEcts = computed(() => modules.value.reduce((acc, curr) => curr.ects + acc, 0));
+
+watch(modules, () => sortModules(modules.value));
 
 function handleDrop(e: DragEvent) {
 	const data = e.dataTransfer?.getData("text/plain");
@@ -19,7 +26,7 @@ function handleDrop(e: DragEvent) {
 	const module = allModules.value.find((m) => m.id === id);
 	if (!module) return;
 
-	module.semester = semester;
+	moveModuleToSemester(module, semester);
 }
 </script>
 

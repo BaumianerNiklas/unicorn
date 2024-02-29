@@ -1,15 +1,23 @@
 <script setup lang="ts">
-import { modules as allModules, addModule, editModule } from "@/data/modules.js";
+import {
+	modules as allModules,
+	addModule,
+	editModule,
+	sortModules,
+	moveModuleToSemester,
+} from "@/data/modules.js";
 import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
 import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
+
+watch(modules, () => sortModules(modules.value));
 
 function reset() {
 	moduleGroups.value = [];
@@ -35,7 +43,8 @@ function handleDrop(e: DragEvent) {
 	const module = allModules.value.find((m) => m.id === id);
 	if (!module) return;
 
-	delete module.semester;
+	// delete the modules semester field
+	moveModuleToSemester(module, undefined);
 }
 </script>
 

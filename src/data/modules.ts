@@ -1,6 +1,8 @@
 import { ref } from "vue";
 import { moduleGroups } from "./groups";
 import parseNoneableStringToInt from "@/util/parseNoneableStringToInt";
+import maxBy from "@/util/maxBy";
+import { semesterCount } from "./semesterCount";
 
 export const VALID_GRADES = [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0] as const;
 export type Grade = (typeof VALID_GRADES)[number];
@@ -12,6 +14,7 @@ export type Module = {
 	ects: number;
 	grade?: Grade;
 	groupId?: number;
+	sortIndex?: number;
 };
 
 let id = 0;
@@ -31,6 +34,7 @@ export function addModule(data: Record<string, string>) {
 			: parseFloat(data.grade)
 		: undefined;
 	const groupId = parseNoneableStringToInt(data.groupId);
+	const sortIndex = parseNoneableStringToInt(data.sortIndex);
 
 	const newModule: Module = {
 		id: id++,
@@ -43,12 +47,14 @@ export function addModule(data: Record<string, string>) {
 	if (groupId !== undefined && moduleGroups.value.some((g) => g.id === groupId))
 		newModule.groupId = groupId;
 
+	rearrangeModuleSortIndices(newModule, sortIndex);
+
 	modules.value.push(newModule);
 }
 
 export function editModule(module: Module, data: Record<string, string>) {
 	for (const [key, value] of Object.entries(data)) {
-		if (!["name", "ects", "semester", "groupId", "grade"].includes(key)) continue;
+		if (!["name", "ects", "semester", "groupId", "grade", "sortIndex"].includes(key)) continue;
 
 		const grade = data.grade
 			? data.grade === "none"
@@ -77,6 +83,9 @@ export function editModule(module: Module, data: Record<string, string>) {
 				break;
 		}
 	}
+
+	const sortIndex = parseNoneableStringToInt(data.sortIndex);
+	rearrangeModuleSortIndices(module, sortIndex);
 }
 
 export function deleteModule(module: Module) {
@@ -119,4 +128,44 @@ export function averageGrade(modules: Module[]) {
 	const weightedGradeSum = modules.reduce((acc, curr) => acc + curr.grade! * curr.ects, 0);
 
 	return weightedGradeSum / totalEcts;
+}
+
+export function moveModuleToSemester(module: Module, toSemester?: number, sortIndex?: number) {
+	if (!toSemester) {
+		delete module.semester;
+		rearrangeModuleSortIndices(module, sortIndex);
+		return;
+	}
+
+	if (toSemester <= 0 || toSemester > semesterCount.value) {
+		console.error(
+			`Tried moving module ${module.name} (${module.id}) to semester ${toSemester}, which is outside the valid range of semesters (1-${semesterCount})`,
+		);
+		return;
+	}
+
+	module.semester = toSemester;
+	rearrangeModuleSortIndices(module, sortIndex);
+}
+
+export function rearrangeModuleSortIndices(pivotModule: Module, sortIndex?: number) {
+	const modulesInSameSemester = modules.value.filter((m) => m.semester === pivotModule.semester);
+
+	if (!sortIndex) {
+		pivotModule.sortIndex = maxBy(modulesInSameSemester, (m) => m.sortIndex ?? 0) + 1;
+		return;
+	}
+
+	for (const module of modulesInSameSemester) {
+		if (!module.sortIndex || !module.semester || module.sortIndex < sortIndex) continue;
+
+		module.sortIndex += 1;
+	}
+}
+
+export function sortModules(modules: Module[]) {
+	modules.sort((a, b) => {
+		if (!a.sortIndex || !b.sortIndex) return 0;
+		else return a.sortIndex - b.sortIndex;
+	});
 }
