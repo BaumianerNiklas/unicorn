@@ -95,7 +95,7 @@ export function deleteModule(module: Module) {
 export function setModules(newModules: Module[]) {
 	modules.value = newModules;
 
-	id = modules.value.reduce((acc, curr) => Math.max(acc, curr.id), id) + 1;
+	id = maxBy(modules.value, (m) => m.id) + 1;
 }
 
 // I could import something like Zod to validate data like this, but this is relatively rudimentary and I

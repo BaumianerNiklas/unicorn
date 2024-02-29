@@ -1,6 +1,7 @@
 import isValidColor from "@/util/isValidColor";
 import { ref, type Ref } from "vue";
 import { modules } from "./modules";
+import maxBy from "@/util/maxBy";
 
 export type ModuleGroup = {
 	id: number;
@@ -50,7 +51,7 @@ export function deleteModuleGroup(group: ModuleGroup) {
 export function setModuleGroups(newModuleGroups: ModuleGroup[]) {
 	moduleGroups.value = newModuleGroups;
 
-	id = moduleGroups.value.reduce((acc, curr) => Math.max(acc, curr.id), id) + 1;
+	id = maxBy(moduleGroups.value, (g) => g.id) + 1;
 }
 
 export function isValidModuleGroup(moduleGroup: unknown): moduleGroup is ModuleGroup {
