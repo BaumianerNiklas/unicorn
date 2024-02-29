@@ -34,7 +34,6 @@ export function addModule(data: Record<string, string>) {
 			: parseFloat(data.grade)
 		: undefined;
 	const groupId = parseNoneableStringToInt(data.groupId);
-	const sortIndex = parseNoneableStringToInt(data.sortIndex);
 
 	const newModule: Module = {
 		id: id++,
@@ -47,7 +46,7 @@ export function addModule(data: Record<string, string>) {
 	if (groupId !== undefined && moduleGroups.value.some((g) => g.id === groupId))
 		newModule.groupId = groupId;
 
-	rearrangeModuleSortIndices(newModule, sortIndex);
+	rearrangeModuleSortIndices(newModule);
 
 	modules.value.push(newModule);
 }
@@ -68,7 +67,7 @@ export function editModule(module: Module, data: Record<string, string>) {
 				module[key] = value;
 				break;
 			case "semester":
-				module[key] = parseNoneableStringToInt(data.semester);
+				moveModuleToSemester(module, parseNoneableStringToInt(data.semester));
 				break;
 			case "ects":
 				module[key] = parseInt(value);
@@ -84,8 +83,7 @@ export function editModule(module: Module, data: Record<string, string>) {
 		}
 	}
 
-	const sortIndex = parseNoneableStringToInt(data.sortIndex);
-	rearrangeModuleSortIndices(module, sortIndex);
+	rearrangeModuleSortIndices(module);
 }
 
 export function deleteModule(module: Module) {
@@ -149,23 +147,27 @@ export function moveModuleToSemester(module: Module, toSemester?: number, sortIn
 }
 
 export function rearrangeModuleSortIndices(pivotModule: Module, sortIndex?: number) {
-	const modulesInSameSemester = modules.value.filter((m) => m.semester === pivotModule.semester);
+	const modulesInSameSemester = modules.value.filter(
+		(m) => m.id !== pivotModule.id && m.semester === pivotModule.semester,
+	);
 
-	if (!sortIndex) {
-		pivotModule.sortIndex = maxBy(modulesInSameSemester, (m) => m.sortIndex ?? 0) + 1;
+	if (sortIndex === undefined) {
+		pivotModule.sortIndex = maxBy(modulesInSameSemester, (m) => m.sortIndex ?? 0, -1) + 1;
 		return;
+	} else {
+		pivotModule.sortIndex = sortIndex;
 	}
 
 	for (const module of modulesInSameSemester) {
-		if (!module.sortIndex || !module.semester || module.sortIndex < sortIndex) continue;
+		if (module.sortIndex === undefined || module.sortIndex < sortIndex) continue;
 
 		module.sortIndex += 1;
 	}
 }
 
 export function sortModules(modules: Module[]) {
-	modules.sort((a, b) => {
-		if (!a.sortIndex || !b.sortIndex) return 0;
+	return modules.sort((a, b) => {
+		if (a.sortIndex === undefined || b.sortIndex === undefined) return 0;
 		else return a.sortIndex - b.sortIndex;
 	});
 }
