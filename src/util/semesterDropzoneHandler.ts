@@ -1,6 +1,6 @@
 import { modules, moveModuleToSemester } from "@/data/modules";
 
-export default function (event: DragEvent, semester?: number) {
+export default function (event: DragEvent, semester?: number, sortIndex?: number) {
 	const data = event.dataTransfer?.getData("text/plain");
 	if (!data) return;
 
@@ -9,5 +9,5 @@ export default function (event: DragEvent, semester?: number) {
 	const module = modules.value.find((m) => m.id === id);
 	if (!module) return;
 
-	moveModuleToSemester(module, semester);
+	moveModuleToSemester(module, semester, sortIndex);
 }
