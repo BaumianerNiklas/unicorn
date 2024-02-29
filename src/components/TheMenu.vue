@@ -4,15 +4,13 @@ import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount
 import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
 import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
-
-watch(modules, () => sortModules(modules.value));
 
 function reset() {
 	moduleGroups.value = [];
@@ -64,7 +62,7 @@ async function handleFileUpload(e: Event) {
 		</FormModal>
 		<div @dragover.prevent @drop="semesterDropzoneHandler" class="min-h-16">
 			<ul>
-				<li v-for="module in modules" :key="module.id">
+				<li v-for="module in sortModules(modules)" :key="module.id">
 					<FormModal reset-on-close @submit="(data) => editModule(module, data)">
 						<template v-slot:form-elements>
 							<ModuleForm :module="module" />
