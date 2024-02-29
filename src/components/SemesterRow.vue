@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import {
-	modules as allModules,
-	editModule,
-	moveModuleToSemester,
-	sortModules,
-} from "@/data/modules.js";
+import { modules as allModules, editModule, sortModules } from "@/data/modules.js";
 import ModuleCard from "./ModuleCard.vue";
 import { computed, watch } from "vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
+import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
 
 const { semester } = defineProps<{ semester: number }>();
 
@@ -16,22 +12,10 @@ const modules = computed(() => allModules.value.filter((m) => m.semester === sem
 const totalEcts = computed(() => modules.value.reduce((acc, curr) => curr.ects + acc, 0));
 
 watch(modules, () => sortModules(modules.value));
-
-function handleDrop(e: DragEvent) {
-	const data = e.dataTransfer?.getData("text/plain");
-	if (!data) return;
-
-	const id = parseInt(data);
-
-	const module = allModules.value.find((m) => m.id === id);
-	if (!module) return;
-
-	moveModuleToSemester(module, semester);
-}
 </script>
 
 <template>
-	<div draggable="true" @dragover.prevent @drop="handleDrop">
+	<div draggable="true" @dragover.prevent @drop="(ev) => semesterDropzoneHandler(ev, semester)">
 		<span>{{ semester }}. semester ({{ totalEcts }})</span>
 		<div class="flex">
 			<FormModal

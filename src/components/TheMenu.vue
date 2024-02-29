@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-	modules as allModules,
-	addModule,
-	editModule,
-	sortModules,
-	moveModuleToSemester,
-} from "@/data/modules.js";
+import { modules as allModules, addModule, editModule, sortModules } from "@/data/modules.js";
 import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
 import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
@@ -14,6 +8,7 @@ import { computed, watch } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
+import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 
@@ -32,19 +27,6 @@ async function handleFileUpload(e: Event) {
 	const json = await files.item(0)?.text();
 	if (!json) return;
 	importFromJson(json);
-}
-
-function handleDrop(e: DragEvent) {
-	const data = e.dataTransfer?.getData("text/plain");
-	if (!data) return;
-
-	const id = parseInt(data);
-
-	const module = allModules.value.find((m) => m.id === id);
-	if (!module) return;
-
-	// delete the modules semester field
-	moveModuleToSemester(module, undefined);
 }
 </script>
 
@@ -80,7 +62,7 @@ function handleDrop(e: DragEvent) {
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<div @dragover.prevent @drop="handleDrop" class="min-h-16">
+		<div @dragover.prevent @drop="semesterDropzoneHandler" class="min-h-16">
 			<ul>
 				<li v-for="module in modules" :key="module.id">
 					<FormModal reset-on-close @submit="(data) => editModule(module, data)">
