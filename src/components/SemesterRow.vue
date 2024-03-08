@@ -139,7 +139,7 @@ function getClosestDropIndicator(toX: number) {
 				@dragover.prevent
 				@drop="(ev) => handleDrop(ev)"
 				:data-index="-1"
-				class="dropIndicator"
+				class="dropIndicator min-h-12"
 			></div>
 		</div>
 	</div>

@@ -24,7 +24,7 @@ function handleDragStart(e: DragEvent) {
 	<div
 		draggable="true"
 		@dragstart="handleDragStart"
-		class="text-center p-2 rounded-2"
+		class="text-center p-2 rounded-2 h-12"
 		:style="{ backgroundColor: group?.color ?? 'inherit' }"
 		ref="divEl"
 	>
