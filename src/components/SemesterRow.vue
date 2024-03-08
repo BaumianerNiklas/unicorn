@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
+import draggedModuleWidth from "@/data/draggedModuleWidth";
 
 const { semester } = defineProps<{ semester: number }>();
 
@@ -28,6 +29,7 @@ function handleDrop(event: DragEvent) {
 
 	if (modules.value.length >= 2) sortModules(modules.value);
 	clearDropIndicators();
+	draggedModuleWidth.value = 0;
 }
 
 function handleDragOver(event: DragEvent) {
@@ -49,11 +51,19 @@ function handleDragOver(event: DragEvent) {
 	);
 	prevClosestDropIndicatorEl?.classList.remove("activeDropIndicator");
 
+	if (prevClosestDropIndicatorEl instanceof HTMLElement) {
+		prevClosestDropIndicatorEl.style.width = "0px";
+	}
+
 	// make new target active
 	const currClosestDropIndicatorEL = dropzone.value.querySelector(
 		`.dropIndicator[data-index="${currClosestIndex}"]`,
 	);
 	currClosestDropIndicatorEL?.classList.add("activeDropIndicator");
+
+	if (currClosestDropIndicatorEL instanceof HTMLElement) {
+		currClosestDropIndicatorEL.style.width = `${draggedModuleWidth.value}px`;
+	}
 
 	// update the closest index for use in sorting when dropping
 	closestDropIndicatorIndex.value = currClosestIndex;
@@ -79,9 +89,13 @@ document.addEventListener("dragover", (event: MouseEvent) => {
 function clearDropIndicators() {
 	if (!dropzone.value) return;
 
-	dropzone.value
-		.querySelectorAll(".activeDropIndicator")
-		.forEach((el) => el.classList.remove("activeDropIndicator"));
+	dropzone.value.querySelectorAll(".activeDropIndicator").forEach((el) => {
+		if (!(el instanceof HTMLElement)) return;
+
+		el.classList.remove("activeDropIndicator");
+		el.style.width = "0px";
+	});
+
 	closestDropIndicatorIndex.value = undefined;
 }
 
@@ -134,6 +148,5 @@ function getClosestDropIndicator(toX: number) {
 <style scoped>
 .activeDropIndicator {
 	background-color: red;
-	width: 50px;
 }
 </style>
