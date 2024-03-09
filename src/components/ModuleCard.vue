@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import draggedModuleWidth from "@/data/draggedModuleWidth";
+import draggedModule from "@/data/draggedModule";
 import { moduleGroups } from "@/data/groups";
 import { type Module } from "@/data/modules.js";
 import { computed, ref } from "vue";
@@ -16,7 +16,10 @@ function handleDragStart(e: DragEvent) {
 	e.dataTransfer.dropEffect = "move";
 	e.dataTransfer.setData("text/plain", module.id.toString());
 
-	draggedModuleWidth.value = divEl.value?.clientWidth ?? 0;
+	draggedModule.value = {
+		color: group.value?.color ?? "inherit",
+		width: divEl.value?.scrollWidth ?? 0,
+	};
 }
 </script>
 

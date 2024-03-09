@@ -5,7 +5,7 @@ import { computed, ref } from "vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
-import draggedModuleWidth from "@/data/draggedModuleWidth";
+import draggedModule from "@/data/draggedModule";
 
 const { semester } = defineProps<{ semester: number }>();
 
@@ -29,7 +29,7 @@ function handleDrop(event: DragEvent) {
 
 	if (modules.value.length >= 2) sortModules(modules.value);
 	clearDropIndicators();
-	draggedModuleWidth.value = 0;
+	draggedModule.value = undefined;
 }
 
 function handleDragOver(event: DragEvent) {
@@ -53,6 +53,7 @@ function handleDragOver(event: DragEvent) {
 
 	if (prevClosestDropIndicatorEl instanceof HTMLElement) {
 		prevClosestDropIndicatorEl.style.width = "0px";
+		prevClosestDropIndicatorEl.style.backgroundColor = "initial";
 	}
 
 	// make new target active
@@ -62,7 +63,8 @@ function handleDragOver(event: DragEvent) {
 	currClosestDropIndicatorEL?.classList.add("activeDropIndicator");
 
 	if (currClosestDropIndicatorEL instanceof HTMLElement) {
-		currClosestDropIndicatorEL.style.width = `${draggedModuleWidth.value}px`;
+		currClosestDropIndicatorEL.style.width = `${draggedModule.value?.width ?? 0}px`;
+		currClosestDropIndicatorEL.style.backgroundColor = draggedModule.value?.color ?? "initial";
 	}
 
 	// update the closest index for use in sorting when dropping
@@ -147,6 +149,6 @@ function getClosestDropIndicator(toX: number) {
 
 <style scoped>
 .activeDropIndicator {
-	background-color: red;
+	border: 2px solid black;
 }
 </style>
