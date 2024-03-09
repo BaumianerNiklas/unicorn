@@ -1,3 +1,4 @@
+import draggedModule from "@/data/draggedModule";
 import { modules, moveModuleToSemester } from "@/data/modules";
 
 export default function (event: DragEvent, semester?: number, sortIndex?: number) {
@@ -10,4 +11,6 @@ export default function (event: DragEvent, semester?: number, sortIndex?: number
 	if (!module) return;
 
 	moveModuleToSemester(module, semester, sortIndex);
+
+	draggedModule.value = undefined;
 }

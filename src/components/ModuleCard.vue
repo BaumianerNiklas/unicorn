@@ -17,6 +17,7 @@ function handleDragStart(e: DragEvent) {
 	e.dataTransfer.setData("text/plain", module.id.toString());
 
 	draggedModule.value = {
+		id: module.id,
 		color: group.value?.color ?? "inherit",
 		width: divEl.value?.scrollWidth ?? 0,
 	};
@@ -28,6 +29,7 @@ function handleDragStart(e: DragEvent) {
 		draggable="true"
 		@dragstart="handleDragStart"
 		class="text-center p-2 rounded-2 h-12"
+		:class="{ 'opacity-40': module.id === draggedModule?.id }"
 		:style="{ backgroundColor: group?.color ?? 'inherit' }"
 		ref="divEl"
 	>

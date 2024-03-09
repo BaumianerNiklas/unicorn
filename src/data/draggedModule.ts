@@ -9,6 +9,7 @@ import { ref } from "vue";
  * access to the drag data in dragover events: https://stackoverflow.com/questions/33420306/drag-drop-datatransfer-object
  */
 const draggedModule = ref<{
+	id: number;
 	color: string;
 	width: number;
 }>();

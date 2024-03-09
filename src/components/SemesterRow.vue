@@ -27,9 +27,9 @@ function handleDrop(event: DragEvent) {
 
 	semesterDropzoneHandler(event, semester, sortIndex);
 
+	// cleanup; resetting the draggedModule ref is done within semesterDropzoneHandler
 	if (modules.value.length >= 2) sortModules(modules.value);
 	clearDropIndicators();
-	draggedModule.value = undefined;
 }
 
 function handleDragOver(event: DragEvent) {
