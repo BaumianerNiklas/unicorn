@@ -21,7 +21,7 @@ const avgGradeDisplay = computed(() => (isNaN(avgGrade.value) ? "/" : avgGrade.v
 		<li>Total ECTS: {{ modules.reduce((acc, curr) => acc + curr.ects, 0) }}</li>
 		<li>Average Grade: {{ avgGradeDisplay }}</li>
 	</ul>
-	<FormModal reset-on-close @submit="(data) => editModuleGroup(group, data)">
+	<FormModal :title="`Edit ${group.name}`" @submit="(data) => editModuleGroup(group, data)">
 		<template v-slot:form-elements>
 			<label>
 				Name

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
 
-const { resetOnClose } = defineProps<{
-	resetOnClose: boolean;
+const { title, resetOnClose = false } = defineProps<{
+	title: string;
+	resetOnClose?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -73,8 +74,11 @@ onUnmounted(() => window.removeEventListener("click", closeOnOutsideClick));
 </script>
 
 <template>
-	<dialog ref="dialogElem" @submit.prevent="handleSubmit">
-		<form ref="formElem" method="dialog">
+	<dialog ref="dialogElem" @submit.prevent="handleSubmit" class="m-auto w-72">
+		<div>
+			<span>{{ title }}</span>
+		</div>
+		<form ref="formElem" method="dialog" class="flex flex-col gap-4">
 			<slot name="form-elements" />
 
 			<button type="submit" value="what">Submit</button>

@@ -126,7 +126,11 @@ function getClosestDropIndicator(toX: number) {
 		<div class="flex" @dragover.prevent.stop="handleDragOver" @drop="handleDrop" ref="dropzone">
 			<div v-for="module in sortModules(modules)" :key="module.id" class="flex">
 				<div class="dropIndicator h-full" :data-index="module.sortIndex"></div>
-				<FormModal reset-on-close @submit="(data) => editModule(module, data)">
+				<FormModal
+					:title="`Edit ${module.name}`"
+					reset-on-close
+					@submit="(data) => editModule(module, data)"
+				>
 					<template v-slot:form-elements>
 						<ModuleForm :module="module" />
 					</template>

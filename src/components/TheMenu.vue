@@ -53,7 +53,7 @@ async function handleFileUpload(e: Event) {
 		</div>
 
 		<h2>Your modules</h2>
-		<FormModal @submit="addModule" reset-on-close>
+		<FormModal title="Create new module" @submit="addModule" reset-on-close>
 			<template v-slot:open-button>Add module</template>
 
 			<template v-slot:form-elements>
@@ -63,7 +63,11 @@ async function handleFileUpload(e: Event) {
 		<div @dragover.prevent @drop="semesterDropzoneHandler" class="min-h-16">
 			<ul>
 				<li v-for="module in sortModules(modules)" :key="module.id">
-					<FormModal reset-on-close @submit="(data) => editModule(module, data)">
+					<FormModal
+						:title="`Edit ${module.name}`"
+						reset-on-close
+						@submit="(data) => editModule(module, data)"
+					>
 						<template v-slot:form-elements>
 							<ModuleForm :module="module" />
 						</template>
@@ -76,7 +80,7 @@ async function handleFileUpload(e: Event) {
 		</div>
 
 		<h2>Your module groups</h2>
-		<FormModal reset-on-close @submit="addModuleGroup">
+		<FormModal title="Create new module group" reset-on-close @submit="addModuleGroup">
 			<template v-slot:open-button>Create new group</template>
 
 			<template v-slot:form-elements>
