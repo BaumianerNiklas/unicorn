@@ -28,6 +28,7 @@ function handleDragStart(e: DragEvent) {
 	<div
 		draggable="true"
 		@dragstart="handleDragStart"
+		@dragend="() => (draggedModule = undefined)"
 		class="text-center p-2 rounded-2 h-12"
 		:class="{ 'opacity-40': module.id === draggedModule?.id }"
 		:style="{ backgroundColor: group?.color ?? 'inherit' }"
