@@ -1,4 +1,8 @@
-import isValidColor from "./isValidColor";
+const HEX_COLOR_REGEX = /^#[0-9a-f]{6}$/;
+
+// is valid hex color is literally just the test method on the regex
+// need the bind for it to be callable
+export const isValidHexColor = HEX_COLOR_REGEX.test.bind(HEX_COLOR_REGEX);
 
 // https://www.w3.org/TR/AERT/#color-contrast
 // https://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color/1855903#1855903
@@ -25,7 +29,7 @@ export function getMostLegibleFontColor(
 export function hexToRgb(hexStr: string): [number, number, number] {
 	const FALLBACK = [0, 0, 0] satisfies [number, number, number];
 
-	if (!isValidColor(hexStr)) return FALLBACK;
+	if (!isValidHexColor(hexStr)) return FALLBACK;
 
 	hexStr = hexStr.substring(1); // get rid of the leading #
 

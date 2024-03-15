@@ -1,7 +1,7 @@
-import isValidColor from "@/util/isValidColor";
 import { ref, type Ref } from "vue";
 import { modules } from "./modules";
 import maxBy from "@/util/maxBy";
+import { isValidHexColor } from "@/util/colors";
 
 export type ModuleGroup = {
 	id: number;
@@ -14,7 +14,7 @@ let id = 0;
 export const moduleGroups: Ref<ModuleGroup[]> = ref([]);
 
 export function addModuleGroup(data: Record<string, string>) {
-	if (!data.name || !data.color || !isValidColor(data.color)) {
+	if (!data.name || !data.color || !isValidHexColor(data.color)) {
 		alert("Received invalid data for this module group. Try adding it again.");
 		return;
 	}
@@ -27,7 +27,7 @@ export function addModuleGroup(data: Record<string, string>) {
 }
 
 export function editModuleGroup(group: ModuleGroup, data: Record<string, string>) {
-	if (!data.name || !data.color || !isValidColor(data.color)) {
+	if (!data.name || !data.color || !isValidHexColor(data.color)) {
 		alert("Received invalid data for this module group. Try adding it again.");
 		return;
 	}
@@ -65,7 +65,7 @@ export function isValidModuleGroup(moduleGroup: unknown): moduleGroup is ModuleG
 		typeof obj.id !== "number" ||
 		typeof obj.name !== "string" ||
 		typeof obj.color !== "string" ||
-		!isValidColor(obj.color)
+		!isValidHexColor(obj.color)
 	)
 		return false;
 
