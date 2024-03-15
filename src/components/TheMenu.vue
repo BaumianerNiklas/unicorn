@@ -8,7 +8,7 @@ import { computed } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
-import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
+import moduleDropzoneHandler from "@/util/moduleDropzoneHandler";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 
@@ -60,7 +60,7 @@ async function handleFileUpload(e: Event) {
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<div @dragover.prevent @drop="semesterDropzoneHandler" class="min-h-16">
+		<div @dragover.prevent @drop="moduleDropzoneHandler" class="min-h-16">
 			<ul>
 				<li v-for="module in sortModules(modules)" :key="module.id">
 					<FormModal

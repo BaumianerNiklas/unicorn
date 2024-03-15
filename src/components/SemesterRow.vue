@@ -4,7 +4,7 @@ import ModuleCard from "./ModuleCard.vue";
 import { computed, ref } from "vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
-import semesterDropzoneHandler from "@/util/semesterDropzoneHandler";
+import moduleDropzoneHandler from "@/util/moduleDropzoneHandler";
 import draggedModule from "@/data/draggedModule";
 
 const { semester } = defineProps<{ semester: number }>();
@@ -25,9 +25,9 @@ function handleDrop(event: DragEvent) {
 		sortIndex = undefined;
 	else sortIndex = closestDropIndicatorIndex.value;
 
-	semesterDropzoneHandler(event, semester, sortIndex);
+	moduleDropzoneHandler(event, semester, sortIndex);
 
-	// cleanup; resetting the draggedModule ref is done within semesterDropzoneHandler
+	// cleanup; resetting the draggedModule ref is done within moduleDropzoneHandler
 	if (modules.value.length >= 2) sortModules(modules.value);
 	clearDropIndicators();
 }
