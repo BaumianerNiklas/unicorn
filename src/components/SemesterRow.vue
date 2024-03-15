@@ -45,16 +45,10 @@ function handleDragOver(event: DragEvent) {
 	// if still targeting same spot, don't do anything
 	if (prevClosestIndex === currClosestIndex) return;
 
-	// make previous target no longer active
-	const prevClosestDropIndicatorEl = dropzone.value.querySelector(
-		`.dropIndicator[data-index="${prevClosestIndex}"]`,
-	);
-	prevClosestDropIndicatorEl?.classList.remove("activeDropIndicator");
-
-	if (prevClosestDropIndicatorEl instanceof HTMLElement) {
-		prevClosestDropIndicatorEl.style.width = "0px";
-		prevClosestDropIndicatorEl.style.backgroundColor = "initial";
-	}
+	// Reset all previous active drop indicators
+	// Use querySelectorAll instead of the single one as with quick mouse movement, multiple indicators
+	// could be active at the same time, leading to visual bugs
+	document.querySelectorAll(".activeDropIndicator").forEach(resetDropIndicator);
 
 	// make new target active
 	const currClosestDropIndicatorEL = dropzone.value.querySelector(
@@ -71,6 +65,7 @@ function handleDragOver(event: DragEvent) {
 	closestDropIndicatorIndex.value = currClosestIndex;
 }
 
+// Clear the indicators when leaving the dropzone (the row) with the mouse
 document.addEventListener("dragover", (event: MouseEvent) => {
 	if (!dropzone.value) return;
 
@@ -88,15 +83,20 @@ document.addEventListener("dragover", (event: MouseEvent) => {
 
 // Utility functions
 
+function resetDropIndicator(indicator: Element) {
+	indicator.classList.remove("activeDropIndicator");
+
+	// The style property only exists on HTMLElements so add this check for type safety
+	if (!(indicator instanceof HTMLElement)) return;
+
+	indicator.style.width = "0px";
+	indicator.style.backgroundColor = "transparent";
+}
+
 function clearDropIndicators() {
 	if (!dropzone.value) return;
 
-	dropzone.value.querySelectorAll(".activeDropIndicator").forEach((el) => {
-		if (!(el instanceof HTMLElement)) return;
-
-		el.classList.remove("activeDropIndicator");
-		el.style.width = "0px";
-	});
+	dropzone.value.querySelectorAll(".activeDropIndicator").forEach(resetDropIndicator);
 
 	closestDropIndicatorIndex.value = undefined;
 }
