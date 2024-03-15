@@ -2,13 +2,25 @@
 import draggedModule from "@/data/draggedModule";
 import { moduleGroups } from "@/data/groups";
 import { type Module } from "@/data/modules.js";
-import { computed, ref } from "vue";
+import { getMostLegibleFontColor, hexToRgb } from "@/util/colors";
+import { computed, ref, watch } from "vue";
 
 const { module } = defineProps<{ module: Module }>();
 
 const group = computed(() => moduleGroups.value.find((g) => g.id === module.groupId));
 
 const divEl = ref<HTMLDivElement>();
+
+// change font color of the card to either black or white depending on which has better contrast
+const fontColor = computed(() => {
+	return getMostLegibleFontColor(...hexToRgb(group.value?.color ?? "#ffffff"));
+});
+
+watch(fontColor, () => {
+	if (!divEl.value) return;
+
+	divEl.value.style.color = fontColor.value;
+});
 
 function handleDragStart(e: DragEvent) {
 	if (!e.dataTransfer) return;
@@ -34,8 +46,9 @@ function handleDragStart(e: DragEvent) {
 		:style="{ backgroundColor: group?.color ?? 'inherit' }"
 		ref="divEl"
 	>
-		<span>{{ module.name }}</span> <br />
-		<div class="flex justify-around">
+		<span>{{ module.name }}</span>
+		<br />
+		<div class="flex justify-around gap-2">
 			<span>({{ module.ects }})</span>
 			<span v-if="module.grade"> {{ module.grade.toFixed(1) }}</span>
 		</div>
