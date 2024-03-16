@@ -1,11 +1,32 @@
+/* Include Fonts (variable fonts */
+
+/* Rubik Normal */
+@font-face {
+	font-family: "Rubik";
+	font-style: normal;
+	src: url("./fonts/Rubik-VariableFont_wght.ttf") format("truetype-variations");
+	font-weight: 1 999;
+}
+
+/* Rubik Italic */
+@font-face {
+	font-family: "Rubik";
+	font-style: italic;
+	src: url("./fonts/Rubik-Italic-VariableFont_wght.ttf") format("truetype-variations");
+	font-weight: 1 999;
+}
+
+/* Very small "CSS Reset" */
+
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
 
+
 #app {
-	font-family: sans-serif;
+	font-family: "Rubik", sans-serif;
 }
 
 ul {
