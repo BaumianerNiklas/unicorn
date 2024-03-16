@@ -2,7 +2,7 @@
 import draggedModule from "@/data/draggedModule";
 import { moduleGroups } from "@/data/groups";
 import { type Module } from "@/data/modules.js";
-import { getMostLegibleFontColor, hexToRgb } from "@/util/colors";
+import { calculatePerceivedBrightness, getMostLegibleFontColor, hexToRgb } from "@/util/colors";
 import { computed, ref } from "vue";
 
 const { module } = defineProps<{ module: Module }>();
@@ -11,10 +11,13 @@ const group = computed(() => moduleGroups.value.find((g) => g.id === module.grou
 
 const divEl = ref<HTMLDivElement>();
 
+const groupColorAsRgb = computed(() => hexToRgb(group.value?.color ?? "#ffffff"));
+
 // change font color of the card to either black or white depending on which has better contrast
-const fontColor = computed(() => {
-	return getMostLegibleFontColor(...hexToRgb(group.value?.color ?? "#ffffff"));
-});
+const fontColor = computed(() => getMostLegibleFontColor(...groupColorAsRgb.value));
+
+// Add a border to very bright modules so you can distinguish them from the background
+const hasBorder = computed(() => calculatePerceivedBrightness(...groupColorAsRgb.value) > 0.9);
 
 function handleDragStart(e: DragEvent) {
 	if (!e.dataTransfer) return;
@@ -35,16 +38,24 @@ function handleDragStart(e: DragEvent) {
 		draggable="true"
 		@dragstart="handleDragStart"
 		@dragend="() => (draggedModule = undefined)"
-		class="text-center p-2 rounded-2 h-12"
-		:class="{ 'opacity-40': module.id === draggedModule?.id }"
-		:style="{ backgroundColor: group?.color ?? 'inherit', color: fontColor }"
+		class="text-center p-2 rounded-2 min-h-12 h-fit flex flex-col gap-1 border-1"
+		:class="{ 'opacity-40': module.id === draggedModule?.id, 'border-solid': hasBorder }"
+		:style="{
+			backgroundColor: group?.color ?? 'inherit',
+			color: fontColor,
+		}"
 		ref="divEl"
 	>
-		<span>{{ module.name }}</span>
-		<br />
-		<div class="flex justify-around gap-2">
-			<span>({{ module.ects }})</span>
-			<span v-if="module.grade"> {{ module.grade.toFixed(1) }}</span>
+		<span class="font-semibold">{{ module.name }}</span>
+		<div class="flex justify-around gap-3">
+			<div class="flex items-center gap-1">
+				<div class="i-lucide-component"></div>
+				<span>{{ module.ects }}</span>
+			</div>
+			<div v-if="module.grade" class="flex items-center gap-1">
+				<div class="i-lucide-sparkles"></div>
+				<span> {{ module.grade.toFixed(1) }}</span>
+			</div>
 		</div>
 	</div>
 </template>
