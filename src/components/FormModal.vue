@@ -99,7 +99,7 @@ onUnmounted(() => window.removeEventListener("click", closeOnOutsideClick));
 		</form>
 	</dialog>
 
-	<button @click.stop="dialogElem?.showModal()" class="cursor-pointer" name="submit">
+	<button @click.stop="dialogElem?.showModal()" class="cursor-pointer border-none" name="submit">
 		<slot name="open-button" />
 	</button>
 </template>
