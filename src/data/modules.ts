@@ -67,7 +67,11 @@ export function editModule(module: Module, data: Record<string, string>) {
 				module[key] = value;
 				break;
 			case "semester":
-				moveModuleToSemester(module, parseNoneableStringToInt(data.semester));
+				moveModuleToSemester(
+					module,
+					parseNoneableStringToInt(data.semester),
+					module.sortIndex,
+				);
 				break;
 			case "ects":
 				module[key] = parseInt(value);
@@ -83,7 +87,7 @@ export function editModule(module: Module, data: Record<string, string>) {
 		}
 	}
 
-	rearrangeModuleSortIndices(module);
+	rearrangeModuleSortIndices(module, module.sortIndex);
 }
 
 export function deleteModule(module: Module) {
