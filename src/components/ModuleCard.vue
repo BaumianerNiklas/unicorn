@@ -4,6 +4,7 @@ import { moduleGroups } from "@/data/groups";
 import { type Module } from "@/data/modules.js";
 import { calculatePerceivedBrightness, getMostLegibleFontColor, hexToRgb } from "@/util/colors";
 import { computed, ref } from "vue";
+import WithTooltip from "./WithTooltip.vue";
 
 const { module } = defineProps<{ module: Module }>();
 
@@ -48,14 +49,18 @@ function handleDragStart(e: DragEvent) {
 	>
 		<span class="font-semibold">{{ module.name }}</span>
 		<div class="flex justify-around gap-3">
-			<div class="flex items-center gap-1">
-				<div class="i-lucide-component"></div>
-				<span>{{ module.ects }}</span>
-			</div>
-			<div v-if="module.grade" class="flex items-center gap-1">
-				<div class="i-lucide-sparkles"></div>
-				<span> {{ module.grade.toFixed(1) }}</span>
-			</div>
+			<WithTooltip tooltip="Credits">
+				<div class="flex items-center gap-1">
+					<div class="i-lucide-component"></div>
+					<span>{{ module.ects }}</span>
+				</div>
+			</WithTooltip>
+			<WithTooltip v-if="module.grade" tooltip="Grade">
+				<div class="flex items-center gap-1">
+					<div class="i-lucide-sparkles"></div>
+					<span> {{ module.grade.toFixed(1) }}</span>
+				</div>
+			</WithTooltip>
 		</div>
 	</div>
 </template>
