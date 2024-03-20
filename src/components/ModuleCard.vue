@@ -51,7 +51,7 @@ function handleDragStart(e: DragEvent) {
 		<div class="flex justify-around gap-3">
 			<WithTooltip tooltip="Credits">
 				<div class="flex items-center gap-1">
-					<div class="i-lucide-component"></div>
+					<div class="i-lucide-hexagon"></div>
 					<span>{{ module.ects }}</span>
 				</div>
 			</WithTooltip>

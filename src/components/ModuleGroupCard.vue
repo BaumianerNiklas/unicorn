@@ -40,13 +40,13 @@ const iconicTextContainerClasslist = "flex items-center gap-1";
 				<ul class="flex justify-around">
 					<WithTooltip tooltip="Number of modules">
 						<li :class="iconicTextContainerClasslist">
-							<div class="i-lucide-hash"></div>
+							<div class="i-lucide-shapes"></div>
 							<span>{{ modules.length }}</span>
 						</li>
 					</WithTooltip>
 					<WithTooltip tooltip="Total ECTS">
 						<li :class="iconicTextContainerClasslist">
-							<div class="i-lucide-component"></div>
+							<div class="i-lucide-hexagon text"></div>
 							<span>{{ totalEcts }}</span>
 						</li>
 					</WithTooltip>
