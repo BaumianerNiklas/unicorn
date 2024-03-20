@@ -94,7 +94,7 @@ async function handleFileUpload(e: Event) {
 			</template>
 		</FormModal>
 		<ul>
-			<li v-for="group in moduleGroups" :key="group.id">
+			<li v-for="group in moduleGroups" :key="group.id" class="my-2">
 				<ModuleGroupCard :group="group"></ModuleGroupCard>
 			</li>
 		</ul>
