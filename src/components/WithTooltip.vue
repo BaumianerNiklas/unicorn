@@ -26,7 +26,11 @@ function handleMouseLeave() {
 </script>
 
 <template>
-	<div @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave" class="relative w-fit z-50">
+	<div
+		@mouseenter="handleMouseEnter"
+		@mouseleave="handleMouseLeave"
+		class="relative w-fit z-50 text-nowrap"
+	>
 		<span
 			v-if="show && !draggedModule"
 			class="absolute bottom-4 left-[50%] translate-x-[-50%] text-xs bg-gray-700 text-white p-1 rounded-2"
