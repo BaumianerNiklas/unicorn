@@ -8,6 +8,7 @@ import { computed } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
+import ButtonWithIcon from "./ButtonWithIcon.vue";
 import moduleDropzoneHandler from "@/util/moduleDropzoneHandler";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
@@ -30,9 +31,9 @@ async function handleFileUpload(e: Event) {
 
 <template>
 	<menu>
-		<button @click="saveToLocalstorage">Save changes</button>
-		<button @click="reset">Reset</button>
-		<button @click="exportToJson">Export to JSON</button>
+		<ButtonWithIcon @click="saveToLocalstorage" text="Save changes" icon="i-lucide-save" />
+		<ButtonWithIcon @click="reset" text="Reset" icon="i-lucide-rotate-ccw" />
+		<ButtonWithIcon @click="exportToJson" text="Export to JSON" icon="i-lucide-upload" />
 
 		<label>
 			Import from JSON
@@ -54,13 +55,15 @@ async function handleFileUpload(e: Event) {
 
 		<h2>Your modules</h2>
 		<FormModal title="Create new module" @submit="addModule" reset-on-close>
-			<template v-slot:open-button>Add module</template>
+			<template v-slot:open-button>
+				<ButtonWithIcon icon="i-lucide-plus-circle" text="Add module" />
+			</template>
 
 			<template v-slot:form-elements>
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<div @dragover.prevent @drop="moduleDropzoneHandler" class="min-h-16">
+		<div @dragover.prevent @drop="moduleDropzoneHandler" class="min-h-16 mt-4">
 			<ul>
 				<li v-for="module in sortModules(modules)" :key="module.id">
 					<FormModal
@@ -81,7 +84,9 @@ async function handleFileUpload(e: Event) {
 
 		<h2>Your module groups</h2>
 		<FormModal title="Create new module group" reset-on-close @submit="addModuleGroup">
-			<template v-slot:open-button>Create new group</template>
+			<template v-slot:open-button>
+				<ButtonWithIcon icon="i-lucide-circle-plus" text="Add group" />
+			</template>
 
 			<template v-slot:form-elements>
 				<label>Name <input type="text" name="name" /></label>
