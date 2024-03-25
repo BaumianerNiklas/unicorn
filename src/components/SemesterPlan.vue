@@ -5,8 +5,8 @@ import SemesterRow from "./SemesterRow.vue";
 
 <template>
 	<div>
-		<h2>Your semesters</h2>
-		<div class="flex flex-col">
+		<h2 class="mb-1">Your semesters</h2>
+		<div class="flex flex-col gap-1">
 			<SemesterRow
 				v-for="semester in semesterCount"
 				:key="semester"

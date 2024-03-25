@@ -39,7 +39,7 @@ function handleDragStart(e: DragEvent) {
 		draggable="true"
 		@dragstart="handleDragStart"
 		@dragend="() => (draggedModule = undefined)"
-		class="text-center p-2 rounded-2 min-h-12 h-fit flex flex-col gap-1 border-1"
+		class="text-center py-2 px-6 rounded-2 min-h-12 h-fit flex flex-col border-1"
 		:class="{ 'opacity-40': module.id === draggedModule?.id, 'border-solid': hasBorder }"
 		:style="{
 			backgroundColor: group?.color ?? 'inherit',
@@ -47,7 +47,9 @@ function handleDragStart(e: DragEvent) {
 		}"
 		ref="divEl"
 	>
-		<span class="font-semibold">{{ module.name }}</span>
+		<span class="font-500 max-w-72 overflow-hidden text-nowrap text-ellipsis">{{
+			module.name
+		}}</span>
 		<div class="flex justify-around gap-3">
 			<WithTooltip tooltip="Credits">
 				<div class="flex items-center gap-1">

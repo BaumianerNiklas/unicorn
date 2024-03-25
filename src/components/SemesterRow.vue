@@ -123,11 +123,9 @@ function getClosestDropIndicator(toX: number) {
 
 <template>
 	<div>
-		<span class="font-semibold"
-			>{{ asOrdinalString(semester) }} semester ({{ totalEcts }})</span
-		>
+		<p class="font-500 mb-1">{{ asOrdinalString(semester) }} semester ({{ totalEcts }})</p>
 		<div class="flex" @dragover.prevent.stop="handleDragOver" @drop="handleDrop" ref="dropzone">
-			<div v-for="module in sortModules(modules)" :key="module.id" class="flex">
+			<div v-for="module in sortModules(modules)" :key="module.id" class="flex gap-1">
 				<div class="dropIndicator h-full" :data-index="module.sortIndex"></div>
 				<FormModal
 					:title="`Edit ${module.name}`"
