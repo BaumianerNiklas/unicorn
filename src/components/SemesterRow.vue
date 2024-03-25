@@ -6,6 +6,7 @@ import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import moduleDropzoneHandler from "@/util/moduleDropzoneHandler";
 import draggedModule from "@/data/draggedModule";
+import asOrdinalString from "@/util/asOrdinalString";
 
 const { semester } = defineProps<{ semester: number }>();
 
@@ -122,7 +123,9 @@ function getClosestDropIndicator(toX: number) {
 
 <template>
 	<div>
-		<span>{{ semester }}. semester ({{ totalEcts }})</span>
+		<span class="font-semibold"
+			>{{ asOrdinalString(semester) }} semester ({{ totalEcts }})</span
+		>
 		<div class="flex" @dragover.prevent.stop="handleDragOver" @drop="handleDrop" ref="dropzone">
 			<div v-for="module in sortModules(modules)" :key="module.id" class="flex">
 				<div class="dropIndicator h-full" :data-index="module.sortIndex"></div>
