@@ -97,7 +97,7 @@ function resetDropIndicator(indicator: Element) {
 function clearDropIndicators() {
 	if (!dropzone.value) return;
 
-	dropzone.value.querySelectorAll(".activeDropIndicator").forEach(resetDropIndicator);
+	dropzone.value.querySelectorAll(".dropIndicator").forEach(resetDropIndicator);
 
 	closestDropIndicatorIndex.value = undefined;
 }
@@ -124,9 +124,15 @@ function getClosestDropIndicator(toX: number) {
 <template>
 	<div>
 		<p class="font-500 mb-1">{{ asOrdinalString(semester) }} semester ({{ totalEcts }})</p>
-		<div class="flex" @dragover.prevent.stop="handleDragOver" @drop="handleDrop" ref="dropzone">
-			<div v-for="module in sortModules(modules)" :key="module.id" class="flex gap-1">
-				<div class="dropIndicator h-full" :data-index="module.sortIndex"></div>
+		<div
+			class="flex gap-.5"
+			@dragover.prevent.stop="handleDragOver"
+			@drop="handleDrop"
+			ref="dropzone"
+		>
+			<!-- both divs have a .5 gap for a total visual gap of 1 -->
+			<div v-for="module in sortModules(modules)" :key="module.id" class="flex gap-.5">
+				<div class="dropIndicator" :data-index="module.sortIndex"></div>
 				<FormModal
 					:title="`Edit ${module.name}`"
 					reset-on-close
@@ -152,8 +158,10 @@ function getClosestDropIndicator(toX: number) {
 	</div>
 </template>
 
-<style scoped>
-.activeDropIndicator {
-	border: 2px solid black;
+<style>
+.dropIndicator {
+	height: 100%;
+	width: 0px;
+	border-radius: 0.5rem;
 }
 </style>
