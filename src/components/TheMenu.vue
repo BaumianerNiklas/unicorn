@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { modules as allModules, addModule, editModule, sortModules } from "@/data/modules.js";
+import { modules as allModules, addModule } from "@/data/modules.js";
 import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
-import ModuleCard from "./ModuleCard.vue";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import { computed } from "vue";
@@ -9,7 +8,7 @@ import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
 import ButtonWithIcon from "./ButtonWithIcon.vue";
-import moduleDropzoneHandler from "@/util/moduleDropzoneHandler";
+import ModuleDropzone from "./ModuleDropzone.vue";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
 
@@ -63,24 +62,7 @@ async function handleFileUpload(e: Event) {
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<div @dragover.prevent @drop="moduleDropzoneHandler" class="min-h-16 mt-4">
-			<ul>
-				<li v-for="module in sortModules(modules)" :key="module.id">
-					<FormModal
-						:title="`Edit ${module.name}`"
-						reset-on-close
-						@submit="(data) => editModule(module, data)"
-					>
-						<template v-slot:form-elements>
-							<ModuleForm :module="module" />
-						</template>
-						<template v-slot:open-button>
-							<ModuleCard :module="module" />
-						</template>
-					</FormModal>
-				</li>
-			</ul>
-		</div>
+		<ModuleDropzone :modules="modules" />
 
 		<h2>Your module groups</h2>
 		<FormModal title="Create new module group" reset-on-close @submit="addModuleGroup">
