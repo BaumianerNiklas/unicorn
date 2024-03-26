@@ -134,7 +134,7 @@ function getClosestDropIndicator(toX: number, toY: number) {
 				else return closest;
 			},
 			{ closest: null as Element | null, distance: Number.POSITIVE_INFINITY },
-		);
+		).closest;
 }
 </script>
 
