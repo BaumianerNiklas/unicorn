@@ -36,7 +36,7 @@ function handleDrop(event: DragEvent) {
 function handleDragOver(event: DragEvent) {
 	if (!dropzone.value) return;
 
-	const closestDropIndicator = getClosestDropIndicator(event.clientX);
+	const closestDropIndicator = getClosestDropIndicator(event.clientX, event.clientY);
 	if (!(closestDropIndicator instanceof HTMLElement) || !closestDropIndicator.dataset.index)
 		return;
 
@@ -102,22 +102,39 @@ function clearDropIndicators() {
 	closestDropIndicatorIndex.value = undefined;
 }
 
-function getClosestDropIndicator(toX: number) {
+function getClosestDropIndicator(toX: number, toY: number) {
 	if (!dropzone.value) return;
 
 	const dropIndicators = dropzone.value.querySelectorAll(".dropIndicator");
 
-	return [...dropIndicators].reduce(
-		(closest, curr) => {
-			const currBoundingRect = curr.getBoundingClientRect();
-			const currX = currBoundingRect.x + currBoundingRect.width / 2;
+	return [...dropIndicators]
+		.filter((indicator) => {
+			// □ □ □ □ □
+			// □ □ □ □x□
+			// if the mouse is at x, only consider modules on the second row
+			const boundingRect = indicator.getBoundingClientRect();
+			const halfHeight = boundingRect.height / 2;
+			const centerY = boundingRect.y + halfHeight;
 
-			const distToMouse = Math.abs(currX - toX);
-			if (distToMouse < closest.x) return { closest: curr, x: distToMouse };
-			else return closest;
-		},
-		{ closest: null as Element | null, x: Number.POSITIVE_INFINITY },
-	).closest;
+			return centerY + halfHeight >= toY && centerY - halfHeight <= toY;
+		})
+		.reduce(
+			(closest, curr) => {
+				const currBoundingRect = curr.getBoundingClientRect();
+				const currX = currBoundingRect.x + currBoundingRect.width / 2;
+				const currY = currBoundingRect.y + currBoundingRect.height / 2;
+
+				// Pythagoras
+				const xDiff = currX - toX;
+				const yDiff = currY - toY;
+
+				const distToMouse = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+				if (distToMouse < closest.distance) return { closest: curr, distance: distToMouse };
+				else return closest;
+			},
+			{ closest: null as Element | null, distance: Number.POSITIVE_INFINITY },
+		);
 }
 </script>
 
@@ -125,7 +142,7 @@ function getClosestDropIndicator(toX: number) {
 	<div>
 		<p class="font-500 mb-1">{{ asOrdinalString(semester) }} semester ({{ totalEcts }})</p>
 		<div
-			class="flex gap-.5"
+			class="flex flex-wrap gap-.5 container"
 			@dragover.prevent.stop="handleDragOver"
 			@drop="handleDrop"
 			ref="dropzone"
