@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import draggedModule from "@/data/draggedModule";
-import { type Module, sortModules, editModule, moveModuleToSemester } from "@/data/modules";
+import { type Module, sortModules, editModule, moveModuleToSemester, modules as allModules } from "@/data/modules";
 import FormModal from "./FormModal.vue";
 import ModuleCard from "./ModuleCard.vue";
 import ModuleForm from "./ModuleForm.vue";
@@ -25,7 +25,7 @@ function handleDrop(event: DragEvent) {
 	if (!data) return;
 
 	const id = parseInt(data);
-	const module = modules.find((m) => m.id === id);
+	const module = allModules.value.find((m) => m.id === id);
 
 	if (module) moveModuleToSemester(module, semester, sortIndex);
 
@@ -141,20 +141,12 @@ function getClosestDropIndicator(toX: number, toY: number) {
 </script>
 
 <template>
-	<div
-		class="flex flex-wrap gap-.5 container"
-		@dragover.prevent.stop="handleDragOver"
-		@drop="handleDrop"
-		ref="dropzone"
-	>
+	<div class="flex flex-wrap gap-.5 container" @dragover.prevent.stop="handleDragOver" @drop="handleDrop"
+		ref="dropzone">
 		<!-- both divs have a .5 gap for a total visual gap of 1 -->
 		<div v-for="module in sortModules(modules)" :key="module.id" class="flex gap-.5">
 			<div class="dropIndicator" :data-index="module.sortIndex"></div>
-			<FormModal
-				:title="`Edit ${module.name}`"
-				reset-on-close
-				@submit="(data) => editModule(module, data)"
-			>
+			<FormModal :title="`Edit ${module.name}`" reset-on-close @submit="(data) => editModule(module, data)">
 				<template v-slot:form-elements>
 					<ModuleForm :module="module" />
 				</template>
@@ -165,11 +157,6 @@ function getClosestDropIndicator(toX: number, toY: number) {
 			</FormModal>
 		</div>
 		<!-- Index -1 as a literal edge case for the last element -->
-		<div
-			@dragover.prevent
-			@drop="(ev) => handleDrop(ev)"
-			:data-index="-1"
-			class="dropIndicator min-h-12"
-		></div>
+		<div @dragover.prevent @drop="(ev) => handleDrop(ev)" :data-index="-1" class="dropIndicator min-h-12"></div>
 	</div>
 </template>
