@@ -125,15 +125,9 @@ function getClosestDropIndicator(toX: number, toY: number) {
 			(closest, curr) => {
 				const currBoundingRect = curr.getBoundingClientRect();
 				const currX = currBoundingRect.x + currBoundingRect.width / 2;
-				const currY = currBoundingRect.y + currBoundingRect.height / 2;
+				const xDiff = Math.abs(currX - toX);
 
-				// Pythagoras
-				const xDiff = currX - toX;
-				const yDiff = currY - toY;
-
-				const distToMouse = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-
-				if (distToMouse < closest.distance) return { closest: curr, distance: distToMouse };
+				if (xDiff < closest.distance) return { closest: curr, distance: xDiff };
 				else return closest;
 			},
 			{ closest: null as Element | null, distance: Number.POSITIVE_INFINITY },
