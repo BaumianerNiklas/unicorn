@@ -16,11 +16,3 @@ const totalEcts = computed(() => modules.value.reduce((acc, curr) => curr.ects +
 		<ModuleDropzone :semester="semester" :modules="modules" />
 	</div>
 </template>
-
-<style>
-.dropIndicator {
-	height: 100%;
-	width: 0px;
-	border-radius: 0.5rem;
-}
-</style>

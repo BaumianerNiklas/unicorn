@@ -60,8 +60,9 @@ function handleDragOver(event: DragEvent) {
 	currClosestDropIndicatorEL?.classList.add("activeDropIndicator");
 
 	if (currClosestDropIndicatorEL instanceof HTMLElement) {
-		currClosestDropIndicatorEL.style.width = `${draggedModule.value?.width ?? 0}px`;
-		currClosestDropIndicatorEL.style.backgroundColor = draggedModule.value?.color ?? "initial";
+		// red-600 in the tailwind palette
+		currClosestDropIndicatorEL.style.backgroundColor = "#dc2626";
+		currClosestDropIndicatorEL.style.width = "3px";
 	}
 
 	// update the closest index for use in sorting when dropping
@@ -157,6 +158,14 @@ function getClosestDropIndicator(toX: number, toY: number) {
 			</FormModal>
 		</div>
 		<!-- Index -1 as a literal edge case for the last element -->
-		<div @dragover.prevent @drop="(ev) => handleDrop(ev)" :data-index="-1" class="dropIndicator min-h-12"></div>
+		<div @dragover.prevent @drop="(ev) => handleDrop(ev)" :data-index="-1" class="dropIndicator min-h-14">
+		</div>
 	</div>
 </template>
+
+<style>
+.dropIndicator {
+	height: 100%;
+	width: 0px;
+}
+</style>
