@@ -11,7 +11,6 @@ import { ref } from "vue";
 const draggedModule = ref<{
 	id: number;
 	color: string;
-	width: number;
 }>();
 
 export default draggedModule;
