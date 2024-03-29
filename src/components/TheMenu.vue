@@ -3,7 +3,7 @@ import { modules as allModules, addModule } from "@/data/modules.js";
 import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
 import ModuleGroupCard from "./ModuleGroupCard.vue";
@@ -11,6 +11,8 @@ import ButtonWithIcon from "./ButtonWithIcon.vue";
 import ModuleDropzone from "./ModuleDropzone.vue";
 
 const modules = computed(() => allModules.value.filter((m) => !m.semester));
+
+const importJsonInput = ref<HTMLInputElement>();
 
 function reset() {
 	moduleGroups.value = [];
@@ -35,8 +37,13 @@ async function handleFileUpload(e: Event) {
 		<ButtonWithIcon @click="exportToJson" text="Export to JSON" icon="i-lucide-upload" />
 
 		<label>
-			Import from JSON
+			<ButtonWithIcon
+				@click="importJsonInput?.click()"
+				text="Import from JSON"
+				icon="i-lucide-import"
+			/>
 			<input
+				ref="importJsonInput"
 				type="file"
 				name="jsonImport"
 				accept="application/json"
