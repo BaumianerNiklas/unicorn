@@ -95,7 +95,7 @@ onUnmounted(() => window.removeEventListener("click", closeOnOutsideClick));
 		<form ref="formElem" method="dialog" class="flex flex-col gap-4">
 			<slot name="form-elements" />
 
-			<button type="submit" value="what">Submit</button>
+			<button type="submit">Submit</button>
 		</form>
 	</dialog>
 
