@@ -20,11 +20,26 @@ function reset() {
 }
 
 async function handleFileUpload(e: Event) {
-	const files = (e.target as HTMLInputElement).files;
+	let files: FileList | undefined | null;
+	if (e instanceof DragEvent) {
+		// drag & drop upload
+		files = e.dataTransfer?.files;
+	} else {
+		// "click" upload
+		files = (e.target as HTMLInputElement).files;
+	}
 
-	if (files?.length !== 1) return;
+	if (files?.length !== 1) {
+		return alert("Can only upload one JSON file.");
+	}
 
-	const json = await files.item(0)?.text();
+	const file = files.item(0);
+
+	if (!file || file.type !== "application/json") {
+		return alert("Can only import JSON files.");
+	}
+
+	const json = await file.text();
 	if (!json) return;
 	importFromJson(json);
 }
@@ -36,7 +51,7 @@ async function handleFileUpload(e: Event) {
 		<ButtonWithIcon @click="reset" text="Reset" icon="i-lucide-rotate-ccw" />
 		<ButtonWithIcon @click="exportToJson" text="Export to JSON" icon="i-lucide-upload" />
 
-		<label>
+		<label @dragover.prevent @drop.prevent.stop="handleFileUpload">
 			<ButtonWithIcon
 				@click="importJsonInput?.click()"
 				text="Import from JSON"
