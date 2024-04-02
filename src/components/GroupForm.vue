@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type ModuleGroup, deleteModuleGroup } from "@/data/groups";
+import DeleteButton from "./DeleteButton.vue";
 
 const { group } = defineProps<{ group?: ModuleGroup }>();
 </script>
@@ -27,5 +28,7 @@ const { group } = defineProps<{ group?: ModuleGroup }>();
 			autocomplete="off"
 		/>
 	</div>
-	<button v-if="group" type="button" @click="deleteModuleGroup(group)">Delete</button>
+	<div class="flex justify-center items-center" v-if="group">
+		<DeleteButton text="Delete this group" @click="deleteModuleGroup(group)" />
+	</div>
 </template>

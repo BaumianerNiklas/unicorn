@@ -2,6 +2,7 @@
 import { moduleGroups } from "@/data/groups";
 import { deleteModule, VALID_GRADES, type Module } from "@/data/modules.js";
 import { semesterCount } from "@/data/semesterCount.js";
+import DeleteButton from "./DeleteButton.vue";
 
 const { module } = defineProps<{ module?: Module }>();
 </script>
@@ -61,12 +62,7 @@ const { module } = defineProps<{ module?: Module }>();
 			</option>
 		</select>
 	</div>
-	<button
-		type="button"
-		v-if="module"
-		@click="deleteModule(module)"
-		class="border-none text-red-500 bg-red-100 text-base rounded-2 w-fit p-2"
-	>
-		Delete
-	</button>
+	<div class="flex items-center justify-center" v-if="module">
+		<DeleteButton text="Delete this module" @click="deleteModule(module)" />
+	</div>
 </template>
