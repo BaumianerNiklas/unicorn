@@ -3,6 +3,7 @@ import { modules as allModules, addModule } from "@/data/modules.js";
 import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
+import GroupForm from "./GroupForm.vue";
 import { ref, computed } from "vue";
 import { moduleGroups, addModuleGroup } from "@/data/groups";
 import { saveToLocalstorage, exportToJson, importFromJson } from "@/util/localStorage";
@@ -93,14 +94,7 @@ async function handleFileUpload(e: Event) {
 			</template>
 
 			<template v-slot:form-elements>
-				<div>
-					<label for="name-input">Name</label>
-					<input type="text" required name="name" id="name-input" />
-				</div>
-				<div>
-					<label for="color-input">Color</label>
-					<input type="color" required name="color" id="color-input" />
-				</div>
+				<GroupForm />
 			</template>
 		</FormModal>
 		<ul>

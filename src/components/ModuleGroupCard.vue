@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import FormModal from "./FormModal.vue";
+import GroupForm from "./GroupForm.vue";
 import WithTooltip from "./WithTooltip.vue";
-import { type ModuleGroup, editModuleGroup, deleteModuleGroup } from "@/data/groups";
+import { type ModuleGroup, editModuleGroup } from "@/data/groups";
 import { modules as allModules, averageGrade } from "@/data/modules";
 import { computed } from "vue";
 
@@ -19,27 +20,7 @@ const iconicTextContainerClasslist = "flex items-center gap-1";
 <template>
 	<FormModal :title="`Edit ${group.name}`" @submit="(data) => editModuleGroup(group, data)">
 		<template v-slot:form-elements>
-			<div>
-				<label for="name-input">Name</label>
-				<input
-					type="text"
-					required
-					name="name"
-					:data-default="group.name"
-					id="name-input"
-				/>
-			</div>
-			<div>
-				<label for="color-input">Color</label>
-				<input
-					type="color"
-					required
-					name="color"
-					:data-default="group.color"
-					id="color-input"
-				/>
-			</div>
-			<button type="button" @click="deleteModuleGroup(group)">Delete</button>
+			<GroupForm :group="group" />
 		</template>
 
 		<template v-slot:open-button>
