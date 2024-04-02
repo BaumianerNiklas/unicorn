@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import draggedModule from "@/data/draggedModule";
-import { type Module, sortModules, editModule, moveModuleToSemester, modules as allModules } from "@/data/modules";
+import {
+	type Module,
+	editModule,
+	moveModuleToSemester,
+	modules as allModules,
+} from "@/data/modules";
 import FormModal from "./FormModal.vue";
 import ModuleCard from "./ModuleCard.vue";
 import ModuleForm from "./ModuleForm.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import maxBy from "@/util/maxBy";
 
 const { modules, semester = undefined } = defineProps<{ modules: Module[]; semester?: number }>();
 
 const closestDropIndicatorIndex = ref<number | undefined>(undefined);
 const dropzone = ref<HTMLDivElement>();
+
+const maxSortIndex = computed(() => maxBy(modules, (m) => m.sortIndex ?? 0, 0));
 
 // Event handlers
 
@@ -31,7 +39,6 @@ function handleDrop(event: DragEvent) {
 
 	// cleanup
 	draggedModule.value = undefined;
-	if (modules.length >= 2) sortModules(modules);
 	clearDropIndicators();
 }
 
@@ -136,12 +143,25 @@ function getClosestDropIndicator(toX: number, toY: number) {
 </script>
 
 <template>
-	<div class="flex flex-wrap gap-.5 container" @dragover.prevent.stop="handleDragOver" @drop="handleDrop"
-		ref="dropzone">
+	<div
+		class="flex flex-wrap gap-.5 container"
+		@dragover.prevent.stop="handleDragOver"
+		@drop="handleDrop"
+		ref="dropzone"
+	>
 		<!-- both divs have a .5 gap for a total visual gap of 1 -->
-		<div v-for="module in sortModules(modules)" :key="module.id" class="flex gap-.5">
+		<div
+			v-for="module in modules"
+			:key="module.id"
+			class="flex gap-.5"
+			:style="{ order: module.sortIndex }"
+		>
 			<div class="dropIndicator" :data-index="module.sortIndex"></div>
-			<FormModal :title="`Edit ${module.name}`" reset-on-close @submit="(data) => editModule(module, data)">
+			<FormModal
+				:title="`Edit ${module.name}`"
+				reset-on-close
+				@submit="(data) => editModule(module, data)"
+			>
 				<template v-slot:form-elements>
 					<ModuleForm :module="module" />
 				</template>
@@ -152,8 +172,13 @@ function getClosestDropIndicator(toX: number, toY: number) {
 			</FormModal>
 		</div>
 		<!-- Index -1 as a literal edge case for the last element -->
-		<div @dragover.prevent @drop="(ev) => handleDrop(ev)" :data-index="-1" class="dropIndicator min-h-14">
-		</div>
+		<div
+			@dragover.prevent
+			@drop="(ev) => handleDrop(ev)"
+			:data-index="-1"
+			class="dropIndicator min-h-14"
+			:style="{ order: maxSortIndex + 1 }"
+		></div>
 	</div>
 </template>
 

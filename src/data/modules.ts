@@ -168,10 +168,3 @@ export function rearrangeModuleSortIndices(pivotModule: Module, sortIndex?: numb
 		module.sortIndex += 1;
 	}
 }
-
-export function sortModules(modules: Module[]) {
-	return modules.sort((a, b) => {
-		if (a.sortIndex === undefined || b.sortIndex === undefined) return 0;
-		else return a.sortIndex - b.sortIndex;
-	});
-}
