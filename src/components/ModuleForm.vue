@@ -9,7 +9,7 @@ const { module } = defineProps<{ module?: Module }>();
 <template>
 	<div>
 		<label for="name-input">Name</label>
-		<input required type="text" name="name" :data-default="module?.name" />
+		<input required type="text" name="name" :data-default="module?.name" autocomplete="off" />
 	</div>
 	<div class="flex gap-4 w-full justify-between">
 		<div class="flex-1 w-0">
@@ -20,6 +20,7 @@ const { module } = defineProps<{ module?: Module }>();
 				name="ects"
 				:data-default="module?.ects.toString()"
 				id="ects-input"
+				autocomplete="off"
 			/>
 		</div>
 		<div class="flex-1 w-0">
@@ -37,6 +38,7 @@ const { module } = defineProps<{ module?: Module }>();
 				name="grade"
 				:data-default="module?.grade?.toString() ?? 'none'"
 				id="grade-select"
+				autocomplete="off"
 			>
 				<option value="none">None</option>
 				<option v-for="grade in VALID_GRADES" :value="grade" :key="grade">
@@ -51,6 +53,7 @@ const { module } = defineProps<{ module?: Module }>();
 			name="groupId"
 			:data-default="module?.groupId?.toString() ?? 'none'"
 			id="groupId-select"
+			autocomplete="off"
 		>
 			<option value="none">None</option>
 			<option v-for="group in moduleGroups" :value="group.id" :key="group.id">

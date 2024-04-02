@@ -7,11 +7,25 @@ const { group } = defineProps<{ group?: ModuleGroup }>();
 <template>
 	<div>
 		<label for="name-input">Name</label>
-		<input type="text" required name="name" :data-default="group?.name" id="name-input" />
+		<input
+			type="text"
+			required
+			name="name"
+			:data-default="group?.name"
+			id="name-input"
+			autocomplete="off"
+		/>
 	</div>
 	<div>
 		<label for="color-input">Color</label>
-		<input type="color" required name="color" :data-default="group?.color" id="color-input" />
+		<input
+			type="color"
+			required
+			name="color"
+			:data-default="group?.color"
+			id="color-input"
+			autocomplete="off"
+		/>
 	</div>
 	<button v-if="group" type="button" @click="deleteModuleGroup(group)">Delete</button>
 </template>
