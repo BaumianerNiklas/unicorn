@@ -67,8 +67,8 @@ function handleDragOver(event: DragEvent) {
 	currClosestDropIndicatorEL?.classList.add("activeDropIndicator");
 
 	if (currClosestDropIndicatorEL instanceof HTMLElement) {
-		// red-600 in the tailwind palette
-		currClosestDropIndicatorEL.style.backgroundColor = "#dc2626";
+		// green-600 in the tailwind palette
+		currClosestDropIndicatorEL.style.backgroundColor = "#16a34a";
 		currClosestDropIndicatorEL.style.width = "3px";
 	}
 
@@ -186,5 +186,6 @@ function getClosestDropIndicator(toX: number, toY: number) {
 .dropIndicator {
 	height: 100%;
 	width: 0px;
+	border-radius: 2px;
 }
 </style>
