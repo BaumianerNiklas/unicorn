@@ -93,8 +93,14 @@ async function handleFileUpload(e: Event) {
 			</template>
 
 			<template v-slot:form-elements>
-				<label>Name <input type="text" name="name" /></label>
-				<label>Color <input type="color" name="color" /></label>
+				<div>
+					<label for="name-input">Name</label>
+					<input type="text" required name="name" id="name-input" />
+				</div>
+				<div>
+					<label for="color-input">Color</label>
+					<input type="color" required name="color" id="color-input" />
+				</div>
 			</template>
 		</FormModal>
 		<ul>

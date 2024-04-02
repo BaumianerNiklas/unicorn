@@ -19,15 +19,26 @@ const iconicTextContainerClasslist = "flex items-center gap-1";
 <template>
 	<FormModal :title="`Edit ${group.name}`" @submit="(data) => editModuleGroup(group, data)">
 		<template v-slot:form-elements>
-			<label>Name<input type="text" name="name" /></label>
-			<label>
-				Name
-				<input type="text" required name="name" :data-default="group.name" />
-			</label>
-			<label>
-				Color
-				<input type="color" required name="color" :data-default="group.color" />
-			</label>
+			<div>
+				<label for="name-input">Name</label>
+				<input
+					type="text"
+					required
+					name="name"
+					:data-default="group.name"
+					id="name-input"
+				/>
+			</div>
+			<div>
+				<label for="color-input">Color</label>
+				<input
+					type="color"
+					required
+					name="color"
+					:data-default="group.color"
+					id="color-input"
+				/>
+			</div>
 			<button type="button" @click="deleteModuleGroup(group)">Delete</button>
 		</template>
 

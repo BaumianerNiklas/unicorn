@@ -65,10 +65,6 @@ onMounted(() => {
 
 	window.addEventListener("click", closeOnOutsideClick);
 
-	// Make the first element of the form always autofocus
-	// (instead of the close button, because <dialog>s always autofocus the first element in the hierarchy by default)
-	dialogElem.value?.querySelector("input:first-of-type")?.setAttribute("autofocus", "");
-
 	dialogElem.value?.addEventListener("close", () => {
 		if (resetOnClose) resetForm();
 	});
@@ -78,24 +74,26 @@ onUnmounted(() => window.removeEventListener("click", closeOnOutsideClick));
 </script>
 
 <template>
-	<dialog ref="dialogElem" @submit.prevent="handleSubmit" class="form-modal m-auto w-72">
-		<div
-			class="flex justify-between items-center mb-4 p-2 border-b-3 border-b-solid border-gray-400"
-		>
-			<span>{{ title }}</span>
-			<button
-				formmethod="dialog"
-				@click="dialogElem?.close()"
-				class="cursor-pointer flex items-center border-none text-base"
-			>
-				<div class="i-lucide-x"></div>
-				<span>Cancel</span>
-			</button>
-		</div>
+	<dialog ref="dialogElem" @submit.prevent="handleSubmit" class="form-modal m-auto w-96 p-4">
+		<h3 class="flex justify-between items-center mb-4 min-w-full">{{ title }}</h3>
 		<form ref="formElem" method="dialog" class="flex flex-col gap-4">
 			<slot name="form-elements" />
 
-			<button type="submit">Submit</button>
+			<div class="flex justify-around">
+				<button
+					formmethod="dialog"
+					@click="dialogElem?.close()"
+					class="border-none text-base text-red-500 bg-red-100 hover:bg-red-200 px-2 rounded-1"
+				>
+					Cancel
+				</button>
+				<button
+					type="submit"
+					class="text-green-500 border-none text-base bg-green-100 hover:bg-green-200 px-2 rounded-1"
+				>
+					Confirm
+				</button>
+			</div>
 		</form>
 	</dialog>
 
@@ -105,12 +103,27 @@ onUnmounted(() => window.removeEventListener("click", closeOnOutsideClick));
 </template>
 
 <style>
-/* 
+/*
 This style tag has to be global in order for it to apply to all form elements (which are defined outside this component)
-So make this selector as specific as possible (hence the .form-modal class)
+So make selectors as specific as possible (hence the .form-modal class)
 */
-dialog.form-modal > form > label {
+
+dialog.form-modal > form div:has(> label) {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+}
+
+dialog.form-modal > form input,
+dialog.form-modal > form select {
+	font-size: 1rem;
+	height: 2rem;
+	border: 1.5px solid black;
+	padding: 3px 6px;
+	border-radius: 4px;
+}
+
+dialog.form-modal > form label:has(+ input:required, + select:required)::after {
+	content: "*";
+	color: red;
 }
 </style>
