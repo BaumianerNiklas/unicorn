@@ -18,7 +18,11 @@ const iconicTextContainerClasslist = "flex items-center gap-1";
 </script>
 
 <template>
-	<FormModal :title="`Edit ${group.name}`" @submit="(data) => editModuleGroup(group, data)">
+	<FormModal
+		:title="`Edit ${group.name}`"
+		reset-on-close
+		@submit="(data) => editModuleGroup(group, data)"
+	>
 		<template v-slot:form-elements>
 			<GroupForm :group="group" />
 		</template>
