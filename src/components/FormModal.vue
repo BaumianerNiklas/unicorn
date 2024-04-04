@@ -108,22 +108,24 @@ This style tag has to be global in order for it to apply to all form elements (w
 So make selectors as specific as possible (hence the .form-modal class)
 */
 
-dialog.form-modal > form div:has(> label) {
-	display: flex;
-	flex-direction: column;
-}
+dialog.form-modal > form {
+	& div:has(> label) {
+		display: flex;
+		flex-direction: column;
+	}
 
-dialog.form-modal > form input,
-dialog.form-modal > form select {
-	font-size: 1rem;
-	height: 2rem;
-	border: 1.5px solid black;
-	padding: 3px 6px;
-	border-radius: 4px;
-}
+	& input,
+	& select {
+		font-size: 1rem;
+		height: 2rem;
+		border: 1.5px solid black;
+		padding: 3px 6px;
+		border-radius: 4px;
+	}
 
-dialog.form-modal > form label:has(+ input:required, + select:required)::after {
-	content: "*";
-	color: red;
+	& label:has(+ input:required, + select:required)::after {
+		content: "*";
+		color: red;
+	}
 }
 </style>
