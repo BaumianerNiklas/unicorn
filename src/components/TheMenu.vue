@@ -85,7 +85,16 @@ async function handleFileUpload(e: Event) {
 				<ModuleForm />
 			</template>
 		</FormModal>
-		<ModuleDropzone :modules="modules" />
+
+		<ModuleDropzone :modules="modules">
+			<template v-slot:empty-fallback>
+				<div
+					class="flex justify-center items-center border-dotted border-gray-400 rounded-2 text-gray-400 text-xs w-32"
+				>
+					<span class="text-center">No unassigned modules</span>
+				</div>
+			</template>
+		</ModuleDropzone>
 
 		<h2>Your module groups</h2>
 		<FormModal title="Create new module group" reset-on-close @submit="addModuleGroup">

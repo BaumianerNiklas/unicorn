@@ -171,6 +171,9 @@ function getClosestDropIndicator(toX: number, toY: number) {
 				</template>
 			</FormModal>
 		</div>
+
+		<slot v-if="modules.length === 0" name="empty-fallback"></slot>
+
 		<!-- Index -1 as a literal edge case for the last element -->
 		<div
 			@dragover.prevent
