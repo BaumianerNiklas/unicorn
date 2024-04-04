@@ -82,7 +82,7 @@ onUnmounted(() => window.removeEventListener("click", closeOnOutsideClick));
 			<div class="flex justify-around">
 				<button
 					formmethod="dialog"
-					@click="dialogElem?.close()"
+					@click.prevent="dialogElem?.close()"
 					class="border-none text-base text-red-500 bg-red-100 hover:bg-red-200 px-2 rounded-1"
 				>
 					Cancel
