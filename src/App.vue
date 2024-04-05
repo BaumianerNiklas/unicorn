@@ -9,7 +9,7 @@ onBeforeMount(() => loadFromLocalstorage());
 
 <template>
 	<h1>🦄 Unicorn</h1>
-	<main class="flex w-full justify-around">
+	<main class="flex flex-col lg:flex-row w-full justify-around px-12 lg:px-0">
 		<SemesterPlan />
 		<TheMenu />
 	</main>

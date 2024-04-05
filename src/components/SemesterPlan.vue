@@ -9,7 +9,7 @@ const buttonStyles =
 
 <template>
 	<div>
-		<div class="flex gap-6 items-center justify-center mb-4">
+		<div class="flex gap-6 items-center mb-4">
 			<h2>Your semesters</h2>
 			<div class="flex justify-center items-center gap-1">
 				<WithTooltip tooltip="Remove semester">
