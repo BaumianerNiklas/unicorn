@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { modules as allModules, addModule } from "@/data/modules.js";
-import { addSemester, removeSemester, semesterCount } from "@/data/semesterCount.js";
 import FormModal from "./FormModal.vue";
 import ModuleForm from "./ModuleForm.vue";
 import GroupForm from "./GroupForm.vue";
@@ -67,13 +66,6 @@ async function handleFileUpload(e: Event) {
 				class="opacity-0 size-0"
 			/>
 		</label>
-
-		<div>
-			<span>Semesters:</span>
-			<button @click="removeSemester">-</button>
-			<span>{{ semesterCount }} </span>
-			<button @click="addSemester">+</button>
-		</div>
 
 		<h2>Your modules</h2>
 		<FormModal title="Create new module" @submit="addModule" reset-on-close>
