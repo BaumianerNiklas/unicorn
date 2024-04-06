@@ -2,10 +2,12 @@ import { isValidModuleGroup, moduleGroups, setModuleGroups } from "@/data/groups
 import { isValidModule, modules, setModules } from "@/data/modules";
 import { semesterCount } from "@/data/semesterCount";
 import maxBy from "./maxBy";
+import hasUnsavedChanges, { setupUnsavedChangesWatcher } from "@/data/hasUnsavedChanges";
 
 export function saveToLocalstorage() {
 	localStorage.setItem("modules", JSON.stringify(modules.value));
 	localStorage.setItem("groups", JSON.stringify(moduleGroups.value));
+	hasUnsavedChanges.value = false;
 }
 
 export function loadFromLocalstorage() {
@@ -16,6 +18,9 @@ export function loadFromLocalstorage() {
 
 	setModules(JSON.parse(modulesInStorage));
 	setModuleGroups(JSON.parse(groupsInStorage));
+
+	// setup the watcher after loading from localstorage so we know what to compare against
+	setupUnsavedChangesWatcher();
 }
 
 export function exportToJson() {
