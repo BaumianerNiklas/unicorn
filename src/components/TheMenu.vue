@@ -51,6 +51,12 @@ const modules = computed(() => allModules.value.filter((m) => !m.semester));
 				<ModuleGroupCard :group="group"></ModuleGroupCard>
 			</li>
 		</ul>
+		<div
+			v-if="moduleGroups.length === 0"
+			class="flex justify-center items-center border-dotted border-gray-400 rounded-2 text-gray-400 text-xs w-32 h-14 mt-1"
+		>
+			<span class="text-center">No module groups</span>
+		</div>
 
 		<DataManagement />
 	</menu>
