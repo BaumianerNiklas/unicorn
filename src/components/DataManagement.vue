@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { importFromJson, saveToLocalstorage, exportToJson } from "@/util/localStorage";
 import ButtonWithIcon from "./ButtonWithIcon.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { moduleGroups } from "@/data/groups";
 import { modules } from "@/data/modules";
+import hasUnsavedChanges from "@/data/hasUnsavedChanges";
 
 const importJsonInput = ref<HTMLInputElement>();
+
+const saveButtonClassList = computed(() => {
+	return hasUnsavedChanges.value
+		? "bg-green-500 hover:bg-green-600"
+		: "bg-gray-300 hover:bg-gray-300 cursor-not-allowed";
+	// additional hover: selector to override the one in ButtonWithIcon
+});
 
 function reset() {
 	moduleGroups.value = [];
@@ -41,7 +49,13 @@ async function handleFileUpload(e: Event) {
 <template>
 	<h2>Data Management</h2>
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-		<ButtonWithIcon @click="saveToLocalstorage" text="Save changes" icon="i-lucide-save" />
+		<ButtonWithIcon
+			@click="saveToLocalstorage"
+			text="Save changes"
+			icon="i-lucide-save"
+			:class="saveButtonClassList"
+			:disabled="!hasUnsavedChanges"
+		/>
 		<ButtonWithIcon
 			@click="reset"
 			text="Reset"
