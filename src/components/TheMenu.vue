@@ -18,7 +18,7 @@ const modules = computed(() => allModules.value.filter((m) => !m.semester));
 		<h2>Your modules</h2>
 		<FormModal title="Create new module" @submit="addModule" reset-on-close>
 			<template v-slot:open-button>
-				<ButtonWithIcon icon="i-lucide-plus-circle" text="Add module" />
+				<ButtonWithIcon icon="i-lucide-plus-circle" text="Add module" class="mb-1" />
 			</template>
 
 			<template v-slot:form-elements>
