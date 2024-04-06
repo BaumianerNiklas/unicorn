@@ -46,13 +46,13 @@ async function handleFileUpload(e: Event) {
 			@click="reset"
 			text="Reset"
 			icon="i-lucide-rotate-ccw"
-			classList="bg-red-500 hover:bg-red-600"
+			class="bg-red-500 hover:bg-red-600"
 		/>
 		<ButtonWithIcon
 			@click="exportToJson"
 			text="Export to JSON"
 			icon="i-lucide-upload"
-			classList="h-fit"
+			class="h-fit"
 		/>
 
 		<label @dragover.prevent @drop.prevent.stop="handleFileUpload">
@@ -60,7 +60,7 @@ async function handleFileUpload(e: Event) {
 				@click="importJsonInput?.click()"
 				text="Import from JSON"
 				icon="i-lucide-import"
-				classList="w-full"
+				class="w-full"
 			/>
 			<input
 				ref="importJsonInput"
