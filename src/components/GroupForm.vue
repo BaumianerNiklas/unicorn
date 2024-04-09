@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ModuleGroup, deleteModuleGroup } from "@/data/groups";
 import DeleteButton from "./DeleteButton.vue";
-import { ref, watch } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 const { group } = defineProps<{ group?: ModuleGroup }>();
 
@@ -9,14 +9,15 @@ const { group } = defineProps<{ group?: ModuleGroup }>();
 // trying to style a color input using CSS is absolute hell
 const selectedColor = ref<string | undefined>(group?.color);
 
-// When re-opening the form, make sure the colors stay in sync
-if (group) watch(group, () => (selectedColor.value = group?.color));
+const resetSelectedColor = () => (selectedColor.value = group?.color);
 
-function handleColorChange(event: Event) {
-	if (!(event.target instanceof HTMLInputElement)) return;
+onMounted(() => {
+	document.addEventListener("unicorn:formModalClosed", resetSelectedColor);
+});
 
-	selectedColor.value = event.target.value;
-}
+onUnmounted(() => {
+	document.removeEventListener("unicorn:formModalClosed", resetSelectedColor);
+});
 </script>
 
 <template>
@@ -46,7 +47,7 @@ function handleColorChange(event: Event) {
 				id="color-input"
 				autocomplete="off"
 				class="opacity-0 size-0"
-				@change="handleColorChange"
+				v-model="selectedColor"
 			/>
 		</label>
 	</div>

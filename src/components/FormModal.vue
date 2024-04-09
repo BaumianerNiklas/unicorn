@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
+import { formModalClosed } from "@/util/events";
 
 const { title, resetOnClose = false } = defineProps<{
 	title: string;
@@ -67,6 +68,7 @@ onMounted(() => {
 
 	dialogElem.value?.addEventListener("close", () => {
 		if (resetOnClose) resetForm();
+		document.dispatchEvent(formModalClosed);
 	});
 });
 
