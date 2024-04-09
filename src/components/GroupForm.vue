@@ -7,7 +7,7 @@ const { group } = defineProps<{ group?: ModuleGroup }>();
 
 // Using JS and a separate label wrapped around the color input here because
 // trying to style a color input using CSS is absolute hell
-const selectedColor = ref<string | undefined>(group?.color);
+const selectedColor = ref<string | undefined>(group?.color ?? "#000000");
 
 const resetSelectedColor = () => (selectedColor.value = group?.color);
 
