@@ -9,17 +9,21 @@ import {
 import FormModal from "./FormModal.vue";
 import ModuleCard from "./ModuleCard.vue";
 import ModuleForm from "./ModuleForm.vue";
-import { computed, ref } from "vue";
+import { computed, ref, toRef } from "vue";
 import maxBy from "@/util/maxBy";
 
-const { modules, semester = undefined } = defineProps<{ modules: Module[]; semester?: number }>();
+const props = defineProps<{
+	modules: Module[];
+	semester?: number;
+}>();
+
+const { semester } = props;
+const modules = toRef(props, "modules");
 
 const closestDropIndicatorIndex = ref<number | undefined>(undefined);
 const dropzone = ref<HTMLDivElement>();
 
-const maxSortIndex = computed(() => maxBy(modules, (m) => m.sortIndex ?? 0, 0));
-
-// Event handlers
+const maxSortIndex = computed(() => maxBy(modules.value, (m) => m.sortIndex ?? 0, 0));
 
 function handleDrop(event: DragEvent) {
 	// if the clostest drop indicator is -1 that is the one at the very right
@@ -190,5 +194,9 @@ function getClosestDropIndicator(toX: number, toY: number) {
 	height: 100%;
 	width: 0px;
 	border-radius: 2px;
+}
+
+.activeDropIndicator {
+	background-color: red;
 }
 </style>
